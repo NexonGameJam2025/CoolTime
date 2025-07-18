@@ -17,8 +17,16 @@ public class TileNodeSystem : MonoBehaviour
         }
     }
 
-    public void Action(InputKey inputKey, Vector2 manaPosition)
+    public void Action(InputKey inputKey)
     {
+        foreach (var tileNode in _tileNodes)
+        {
+            Search(inputKey, tileNode.Coordinate);
+        }
+    }
 
+    private void Search(InputKey inputKey, Vector2 position)
+    {
+        
     }
 }

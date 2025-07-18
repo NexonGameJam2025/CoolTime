@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: fbca0271d9d092b489a9fec833750666
+guid: b3594b342c09a324a811742d5edbf8fc
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 5003151735520192706
-    second: Frame_3_0
+      213: -3697497975802979336
+    second: Tile_Fire (1)_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -113,13 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Frame_3_0
+      name: Tile_Fire (1)_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1920
-        height: 1080
+        width: 116
+        height: 116
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -128,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2c86f01eef3ce6540800000000000000
-      internalID: 5003151735520192706
+      spriteID: 8fb99826e29dfacc0800000000000000
+      internalID: -3697497975802979336
       vertices: []
       indices: 
       edges: []
@@ -138,7 +138,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -148,7 +148,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      Frame_3_0: 5003151735520192706
+      Tile_Fire (1)_0: -3697497975802979336
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
