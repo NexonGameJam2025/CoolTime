@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 
 public enum EManaLevel
@@ -8,7 +9,6 @@ public enum EManaLevel
 
 public class TileNode : MonoBehaviour
 {
-    
     private float _temperature;
     private bool _isDestroy = false;
     private bool _onMana = false;
@@ -23,6 +23,62 @@ public class TileNode : MonoBehaviour
     [SerializeField] private Wall _downWall;
     [SerializeField] private Wall _rightWall;
     [SerializeField] private Wall _leftWall;
+
+    private Coroutine _co_timer;
+    private int _currentAppliedTemperature = 0;
+
+    private void OnDestroy()
+    {
+        if (_co_timer != null)
+        {
+            StopCoroutine(_co_timer);
+            _co_timer = null;
+            _currentAppliedTemperature = 0;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (_co_timer != null)
+        {
+            StopCoroutine(_co_timer);
+            _co_timer = null;
+            _currentAppliedTemperature = 0;
+        }
+    }
+
+    public void ApplyTemperature(int temperature, int timer = 0, bool isPermanent = false)
+    {
+        if (isPermanent)
+        {
+            _temperature -= temperature;
+        }
+        else
+        {
+            _co_timer = StartCoroutine(CO_ApplyTemperature(temperature, timer));
+        }
+    }
+
+    private IEnumerator CO_ApplyTemperature(int temperature, int timer, Action doneCallback = null)
+    {
+        if (_co_timer != null)
+        {
+            StopCoroutine(_co_timer);
+            _temperature += _currentAppliedTemperature;
+        }
+        
+        _temperature -= temperature;
+        _currentAppliedTemperature = temperature;
+        
+        if (timer > 0)
+        {
+            yield return new WaitForSeconds(timer);
+        }
+        
+        _temperature += temperature;
+        
+        doneCallback?.Invoke();
+    }
 
 #if UNITY_EDITOR
     private void OnValidate()
