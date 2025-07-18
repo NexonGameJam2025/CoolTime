@@ -1,0 +1,16 @@
+using UnityEngine;
+using System.Collections.Generic;
+
+namespace Core.Scripts.Table
+{
+    [System.Serializable]
+    public class {@DataName}
+    {
+        {@DataValue}
+    }
+
+    [System.Serializable]
+    public class {@ClassName} : Table<{@DataName}, {@KeyType}>
+    {
+    }
+}
