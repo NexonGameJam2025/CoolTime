@@ -2,6 +2,13 @@ namespace Core.Scripts
 {
     public static class Define
     {
+        public enum EBuildingType
+        {
+            None,
+            ColdShieldGenerator,
+            FrozenBeamLauncher,
+            Wall,
+        }
         public enum ESceneType
         {
             MainScene

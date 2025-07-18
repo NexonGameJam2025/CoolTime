@@ -14,6 +14,11 @@ public class TileNode : MonoBehaviour
     private bool _onMana = false;
     private bool _onBuilding = false;
     private int _manaLevel = 1;
+    private bool _onWall = false;
+    private int _wallCount = 0;
+    public bool OnBuilding => _onBuilding;
+    
+    private Action<EManaLevel> _onBuildingCollisionAction;
 
     [Header("Information")]
     [SerializeField] private Vector2 _coordinate;
@@ -23,28 +28,74 @@ public class TileNode : MonoBehaviour
     [SerializeField] private Wall _downWall;
     [SerializeField] private Wall _rightWall;
     [SerializeField] private Wall _leftWall;
-
-    private Coroutine _co_timer;
+    
+    private Coroutine _coTimer;
     private int _currentAppliedTemperature = 0;
+
+    private void Awake()
+    {
+        if (_upWall)
+        {
+            _upWall.OnEnableWall += OnEnableWallAction;
+            _upWall.OnDisableWall += OnDisableWallAction;
+        }
+        if (_downWall)
+        {
+            _downWall.OnEnableWall += OnEnableWallAction;
+            _downWall.OnDisableWall += OnDisableWallAction;
+        }
+        if (_rightWall)
+        {
+            _rightWall.OnEnableWall += OnEnableWallAction;
+            _rightWall.OnDisableWall += OnDisableWallAction;
+        }
+        if (_leftWall)
+        {
+            _leftWall.OnEnableWall += OnEnableWallAction;
+            _leftWall.OnDisableWall += OnDisableWallAction;
+        }
+    }
 
     private void OnDestroy()
     {
-        if (_co_timer != null)
+        if (_coTimer != null)
         {
-            StopCoroutine(_co_timer);
-            _co_timer = null;
+            StopCoroutine(_coTimer);
+            _coTimer = null;
             _currentAppliedTemperature = 0;
         }
     }
 
     private void OnDisable()
     {
-        if (_co_timer != null)
+        if (_coTimer != null)
         {
-            StopCoroutine(_co_timer);
-            _co_timer = null;
+            StopCoroutine(_coTimer);
+            _coTimer = null;
             _currentAppliedTemperature = 0;
         }
+    }
+
+    private void OnEnableWallAction()
+    {
+        _wallCount++;
+        _onWall = true;
+    }
+    
+    private void OnDisableWallAction()
+    {
+        _wallCount--;
+        if (_wallCount <= 0)
+        {
+            _onWall = false;
+            _wallCount = 0;
+        }
+    }
+
+    public void SetBuilding(Building building)
+    {
+        _onBuildingCollisionAction += building.OnCollision;
+        _onBuilding = true;
     }
 
     public void ApplyTemperature(int temperature, int timer = 0, bool isPermanent = false)
@@ -55,15 +106,15 @@ public class TileNode : MonoBehaviour
         }
         else
         {
-            _co_timer = StartCoroutine(CO_ApplyTemperature(temperature, timer));
+            _coTimer = StartCoroutine(CO_ApplyTemperature(temperature, timer));
         }
     }
 
     private IEnumerator CO_ApplyTemperature(int temperature, int timer, Action doneCallback = null)
     {
-        if (_co_timer != null)
+        if (_coTimer != null)
         {
-            StopCoroutine(_co_timer);
+            StopCoroutine(_coTimer);
             _temperature += _currentAppliedTemperature;
         }
         

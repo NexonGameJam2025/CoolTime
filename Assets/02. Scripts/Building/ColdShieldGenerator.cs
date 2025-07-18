@@ -17,7 +17,7 @@ public class ColdShieldGenerator : Building
         { EManaLevel.Three, 18 }
     };
     
-    protected override void OnCollision(EManaLevel manaLevel)
+    public override void OnCollision(EManaLevel manaLevel)
     {
         var timer = TimerInfo[manaLevel];
         var temperature = TemperatureInfo[manaLevel];

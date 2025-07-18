@@ -1,15 +1,15 @@
-using System;
 using System.Collections.Generic;
+using Core.Scripts;
 using UnityEngine;
-using UnityEngine.UI;
 
 public abstract class Building : MonoBehaviour
 {
-    [SerializeField] private Image imageBuilding;
+    [SerializeField] protected SpriteRenderer spriteBuilding;
     [SerializeField] private int cost;
     [SerializeField] private float previewImageOpacity = 0.5f;
-
-    public Action<EManaLevel> OnCollisionAction;
+    [SerializeField] private Define.EBuildingType buildingType = Define.EBuildingType.None;
+    
+    public Define.EBuildingType BuildingType => buildingType;
     protected TileNodeSystem _tileNodeSystem;
     
     protected readonly List<(int, int)> FourDirections = new()
@@ -25,20 +25,15 @@ public abstract class Building : MonoBehaviour
     protected void Start()
     {
         _tileNodeSystem = FindObjectOfType<TileNodeSystem>();
-        OnCollisionAction += OnCollision;
     }
     
-    public void SetPreviewImage()
+    public void TogglePreviewImage(bool isOn)
     {
-        var color = imageBuilding.color;
-        color.a = previewImageOpacity;
-        imageBuilding.color = color;
+        var opacity = isOn ? previewImageOpacity : 1f;
+        var color = spriteBuilding.color;
+        color.a = opacity;
+        spriteBuilding.color = color;
     }
     
-    public void SetPosition(Vector2 position)
-    {
-        transform.position = position;
-    }
-
-    protected abstract void OnCollision(EManaLevel manaLevel);
+    public abstract void OnCollision(EManaLevel manaLevel);
 }
