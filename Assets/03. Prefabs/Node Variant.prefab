@@ -8,6 +8,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 572254978616196137, guid: c8e28a6b0bbd31f438fa7ab42fa3cc33, type: 3}
+      propertyPath: m_Size.x
+      value: 1.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 572254978616196137, guid: c8e28a6b0bbd31f438fa7ab42fa3cc33, type: 3}
+      propertyPath: m_Size.y
+      value: 1.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 572254978616196137, guid: c8e28a6b0bbd31f438fa7ab42fa3cc33, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -3697497975802979336, guid: b3594b342c09a324a811742d5edbf8fc, type: 3}
+    - target: {fileID: 745551139489937762, guid: c8e28a6b0bbd31f438fa7ab42fa3cc33, type: 3}
+      propertyPath: _tileState
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6343989149599899894, guid: c8e28a6b0bbd31f438fa7ab42fa3cc33, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.6626801
@@ -50,7 +66,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9137307451738609744, guid: c8e28a6b0bbd31f438fa7ab42fa3cc33, type: 3}
       propertyPath: m_Name
-      value: Square Variant
+      value: Node Variant
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
