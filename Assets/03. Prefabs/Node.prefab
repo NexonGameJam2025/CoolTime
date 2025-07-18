@@ -105,10 +105,10 @@ MonoBehaviour:
   _destroyDelay: 5
   _shakeStrength: 0.05
   _shakeFrequency: 20
-  _meltSprite: {fileID: -3697497975802979336, guid: b3594b342c09a324a811742d5edbf8fc, type: 3}
+  _meltSprite: {fileID: 1505637695091900982, guid: 142308152ce78e5449374e2f50763505, type: 3}
   _safeSprite: {fileID: -4171328443020525237, guid: a0d8da4260b9b3b4f80e9cfd40517873, type: 3}
   _dangerSprite: {fileID: -3499767191433309291, guid: 5223d2ae1d97305489134ce574265f9e, type: 3}
-  _destroySprite: {fileID: -3697497975802979336, guid: b3594b342c09a324a811742d5edbf8fc, type: 3}
+  _destroySprite: {fileID: -5010586816034118852, guid: b3594b342c09a324a811742d5edbf8fc, type: 3}
   _upWall: {fileID: 0}
   _downWall: {fileID: 0}
   _rightWall: {fileID: 0}

@@ -1409,6 +1409,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 381406387}
+  - component: {fileID: 381406388}
   m_Layer: 0
   m_Name: Mana System
   m_TagString: Untagged
@@ -1431,6 +1432,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &381406388
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 381406386}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ee56d75ee135764197b0745f68b2f44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _manaGO: {fileID: 8184101894774061329, guid: 502fe3ea58f825b4da13318f35ced8d3, type: 3}
+  _nodeSystem: {fileID: 414249660}
 --- !u!1001 &384735477
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10003,63 +10018,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c5f2506aeeb05464c89c7aecb063900a, type: 3}
---- !u!1001 &3571887362554330490
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 6706349331783000538, guid: 502fe3ea58f825b4da13318f35ced8d3, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -3.65
-      objectReference: {fileID: 0}
-    - target: {fileID: 6706349331783000538, guid: 502fe3ea58f825b4da13318f35ced8d3, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 3.84
-      objectReference: {fileID: 0}
-    - target: {fileID: 6706349331783000538, guid: 502fe3ea58f825b4da13318f35ced8d3, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6706349331783000538, guid: 502fe3ea58f825b4da13318f35ced8d3, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6706349331783000538, guid: 502fe3ea58f825b4da13318f35ced8d3, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6706349331783000538, guid: 502fe3ea58f825b4da13318f35ced8d3, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6706349331783000538, guid: 502fe3ea58f825b4da13318f35ced8d3, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6706349331783000538, guid: 502fe3ea58f825b4da13318f35ced8d3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6706349331783000538, guid: 502fe3ea58f825b4da13318f35ced8d3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6706349331783000538, guid: 502fe3ea58f825b4da13318f35ced8d3, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8184101894774061329, guid: 502fe3ea58f825b4da13318f35ced8d3, type: 3}
-      propertyPath: m_Name
-      value: Mana
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 502fe3ea58f825b4da13318f35ced8d3, type: 3}
 --- !u!1001 &4336353888382021285
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10129,4 +10087,3 @@ SceneRoots:
   - {fileID: 771033710}
   - {fileID: 414249661}
   - {fileID: 381406387}
-  - {fileID: 3571887362554330490}

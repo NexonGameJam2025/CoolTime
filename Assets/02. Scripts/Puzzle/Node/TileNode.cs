@@ -18,15 +18,16 @@ public class TileNode : MonoBehaviour
     private float _temperature;
     private bool _isDestroy = false;
     private bool _onMana = false;
+    public bool OnMana => _onMana;
     private bool _onBuilding = false;
     private float _elapsedTime = 0f;
-    private int _manaLevel = 1;
     private bool _onWall = false;
     private int _wallCount = 0;
     public bool OnBuilding => _onBuilding;
     
     private Action<EManaLevel> _onBuildingCollisionAction;
     private Mana _currentMana;
+    public Mana CurrentMana => _currentMana;
 
     [Header("Information")]
     [SerializeField] private Vector2 _coordinate;
@@ -101,8 +102,14 @@ public class TileNode : MonoBehaviour
 
     public void SetMana(Mana mana)
     {
-        _onMana = true;
         _currentMana = mana;
+        _onMana = true;
+    }
+
+    public void UnsetMana()
+    {
+        _currentMana = null;
+        _onMana = false;
     }
 
     private void Update()

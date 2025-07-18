@@ -2,15 +2,6 @@ using UnityEngine;
 
 public class Mana : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] private int _manaLevel = 1;
+    public int ManaLevel => _manaLevel;
 }
