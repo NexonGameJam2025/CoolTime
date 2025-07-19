@@ -190,7 +190,7 @@ public class TileNode : MonoBehaviour
     private void UpdateTemperature()
     {
         float t = GameManager.Instance.ElapsedTime;
-        _temperature = 50f + (_twoCoefficient * t * t) + (_oneCoefficient * t) + _temperatureDecreaseByBuilding;
+        _temperature = 50f + (_twoCoefficient * t * t) + (_oneCoefficient * t) + TemperatureDecreaseByBuilding;
         if( _temperature < 0)
         {
             _temperature = 0;
