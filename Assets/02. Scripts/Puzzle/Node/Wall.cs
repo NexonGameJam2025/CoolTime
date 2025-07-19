@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 
 public class Wall : Building
@@ -14,7 +15,9 @@ public class Wall : Building
     public event Action OnActivateWall;
     public event Action OnDeactivateWall;
     
-    private static float WALL_LIFE_TIME = 60.0f;
+    private static float WALL_LIFE_TIME_ONE = 50.0f;
+    private static float WALL_LIFE_TIME_TWO = 35.0f;
+    private static float WALL_LIFE_TIME_THREE = 20.0f;
     private static float WALL_FADE_TIME = 1.0f;
     private static Vector3 WALL_BROKEN_POWER = new(0.0f, 0.035f, 0.0f);
     private Coroutine _coWallLifeTimer;
@@ -48,14 +51,37 @@ public class Wall : Building
     {
         base.OnFinishBuild();
         
+        GameManager.Instance.WallCount++;
+        if (GameManager.Instance.WallCount % 5 == 0)
+        {
+            var barTextObject = GameObject.Find("UI_WallItem");
+            barTextObject.GetComponent<UIBuilding>().IncreaseCost();
+        }
+        
         rendererWall.DOFade(1.0f, 0.5f);
         rendererPillarOne.DOFade(1.0f, 0.5f);
         rendererPillarTwo.DOFade(1.0f, 0.5f);
         
         IsEnable = true;
         OnActivateWall?.Invoke();
+
+        // var temperature = GameManager.Instance.Temperature;
+        var temperature = 50.0f;
+        float timer;
+        if (temperature <= 60)
+        {
+            timer = WALL_LIFE_TIME_ONE;
+        }
+        else if (temperature <= 70)
+        {
+            timer = WALL_LIFE_TIME_TWO;
+        }
+        else
+        {
+            timer = WALL_LIFE_TIME_THREE;
+        }
         
-        _coWallLifeTimer = StartCoroutine(CO_WallLifeTimer(WALL_LIFE_TIME));
+        _coWallLifeTimer = StartCoroutine(CO_WallLifeTimer(timer));
     }
 
     public override void OnDeActivate()

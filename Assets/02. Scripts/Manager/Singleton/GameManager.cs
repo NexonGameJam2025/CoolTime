@@ -10,6 +10,7 @@ public class GameManager : Singleton<GameManager>
     private float _elapsedTime = 0f;
     private bool _isPaused = false;
     public int Gold { get; private set; } = 100; // TODO : Temperary 100 gold
+    public int WallCount { get; set; } = 0;
 
     private Coroutine _coCountingEffect;
 
