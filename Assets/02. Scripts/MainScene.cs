@@ -20,7 +20,7 @@ public class MainScene : BaseScene
         base.Init();
 
         Managers.UI.ShowPopupUI<UIMainPopup>();
-        transPenguin.DOMove(new Vector3(-4f, 0.0f, 0.0f), 0.7f)
+        transPenguin.DOMove(new Vector3(-3.5f, 0.0f, 0.0f), 0.7f)
             .SetEase(Ease.OutCirc);
     }
 }
