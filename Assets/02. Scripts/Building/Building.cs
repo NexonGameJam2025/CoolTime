@@ -60,11 +60,11 @@ public abstract class Building : MonoBehaviour
         
         int start;
         if (Coordinate.y < 2)
-            start = 0;
+            start = 2;
         else if (Coordinate.y < 5)
             start = 1;
         else
-            start = 2;
+            start = 0;
         BuilderSystem.OnStartBuilder(start, this.transform, OnFinishBuild);
     }
 
