@@ -27,6 +27,7 @@ public class TileNode : MonoBehaviour
 
     private Action<EManaLevel> _onBuildingCollisionAction;
     private Building _currentBuilding;
+    public bool CurrentBuilding => _currentBuilding?.IsConstructing ?? false;
     private Mana _currentMana;
     public Mana CurrentMana => _currentMana;
 
@@ -66,6 +67,16 @@ public class TileNode : MonoBehaviour
     [SerializeField] private Wall _rightWall;
     [SerializeField] private Wall _leftWall;
 
+    private bool _isUpwallEnable = false;
+    private bool _isDownWallEnable = false;
+    private bool _isLeftWallEnable = false;
+    private bool _isRightWallEnable = false;
+
+    public bool IsUpWallEnable => _upWall?.IsEnable ?? false;
+    public bool IsDownWallEnable => _downWall?.IsEnable ?? false;
+    public bool IsLeftWallEnable => _leftWall?.IsEnable ?? false;
+    public bool IsRightWallEnable => _rightWall?.IsEnable ?? false;
+
     [Header("Coefficient")]
     [SerializeField] float _twoCoefficient = 0.0004f;
     [SerializeField] float _oneCoefficient = 0.03f;
@@ -104,7 +115,13 @@ public class TileNode : MonoBehaviour
             _leftWall.OnDeactivateWall += OnDeactivateWallAction;
         }
     }
-
+    private void FixedUpdate()
+    {
+        _isUpwallEnable = IsUpWallEnable;
+        _isDownWallEnable = IsDownWallEnable;
+        _isLeftWallEnable = IsLeftWallEnable;
+        _isRightWallEnable = IsRightWallEnable;
+    }
     public void ReceiveMana(Mana manaComponent)
     {
         if (_onMana && _currentMana != null)

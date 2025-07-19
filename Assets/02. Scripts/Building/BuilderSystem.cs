@@ -19,15 +19,17 @@ public class BuilderSystem : MonoBehaviour
         var builder = Instantiate(builderPrefab, startPos.position, Quaternion.identity);
         
         var sequence = DOTween.Sequence();
-        sequence.Append(builder.transform.DOMove(endPos.position, duration).OnComplete(() =>
-        {
-            doneCallback?.Invoke();
-        }));
+        sequence.Append(builder.transform.DOMove(endPos.position, duration));
         sequence.AppendInterval(BUILDER_BUILD_EFFECT_DURATION);
-        sequence.Append(builder.transform.DOMove(startPos.position, duration).OnComplete(() =>
-        {
-            Destroy(builder);
-        }));
+        sequence.Append(builder.transform.DOMove(startPos.position, duration)
+            .OnStart(() =>
+            {
+                doneCallback?.Invoke();
+            })
+            .OnComplete(() =>
+            {
+                Destroy(builder);
+            }));
         sequence.SetLink(builder);
         sequence.Play();
     }

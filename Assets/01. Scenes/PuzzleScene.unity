@@ -2357,6 +2357,7 @@ MonoBehaviour:
   - {fileID: 132212590}
   - {fileID: 1700888090}
   - {fileID: 1245130125}
+  _manaMoveDuration: 0.1
 --- !u!4 &414249661
 Transform:
   m_ObjectHideFlags: 0
@@ -9335,7 +9336,7 @@ PrefabInstance:
     - target: {fileID: 2755858354369819885, guid: c5f2506aeeb05464c89c7aecb063900a, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -4171328443020525237, guid: a0d8da4260b9b3b4f80e9cfd40517873, type: 3}
+      objectReference: {fileID: 1505637695091900982, guid: 142308152ce78e5449374e2f50763505, type: 3}
     - target: {fileID: 2755858354369819885, guid: c5f2506aeeb05464c89c7aecb063900a, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
@@ -9358,7 +9359,7 @@ PrefabInstance:
       objectReference: {fileID: 1601474823}
     - target: {fileID: 3141105171442168230, guid: c5f2506aeeb05464c89c7aecb063900a, type: 3}
       propertyPath: _tileState
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3141105171442168230, guid: c5f2506aeeb05464c89c7aecb063900a, type: 3}
       propertyPath: _coordinate.x
