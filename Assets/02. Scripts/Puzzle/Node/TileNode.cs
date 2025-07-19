@@ -57,6 +57,7 @@ public class TileNode : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float _destroyDelay = 5f;
+    [SerializeField] private float _dangerDelay = 3f;
 
     [Header("Effect")]
     [SerializeField] private float _shakeStrength = 0.08f;
@@ -88,6 +89,7 @@ public class TileNode : MonoBehaviour
     [SerializeField] float _oneCoefficient = 0.03f;
 
     private Coroutine _co_timer;
+    private Coroutine _co_dangerTimer;
     private Coroutine _co_destroyTimer;
     private SpriteRenderer _spriteRenderer;
 
@@ -187,7 +189,7 @@ public class TileNode : MonoBehaviour
 
         float t = GameManager.Instance.ElapsedTime;
         _temperature = 35f + (_twoCoefficient * t * t) + (_oneCoefficient * t) + _temperatureDecreaseByBuilding;
-        
+
 
         UpdateStateByTemperature();
     }
@@ -219,8 +221,12 @@ public class TileNode : MonoBehaviour
 
         if (_temperature > 50)
         {
+            if (_co_dangerTimer != null)
+            {
+                StopCoroutine(_co_dangerTimer);
+                _co_dangerTimer = null;
+            }
             TileState = ETileState.Danger;
-
             if (_co_destroyTimer == null)
             {
                 _co_destroyTimer = StartCoroutine(CO_DestroyTile());
@@ -234,7 +240,11 @@ public class TileNode : MonoBehaviour
                 _co_destroyTimer = null;
                 transform.DOKill();
             }
-            TileState = ETileState.Danger;
+
+            if (_tileState != ETileState.Danger && _co_dangerTimer == null)
+            {
+                _co_dangerTimer = StartCoroutine(CO_EnterDangerState());
+            }
         }
         else
         {
@@ -244,10 +254,34 @@ public class TileNode : MonoBehaviour
                 _co_destroyTimer = null;
                 transform.DOKill();
             }
+            if (_co_dangerTimer != null)
+            {
+                StopCoroutine(_co_dangerTimer);
+                _co_dangerTimer = null;
+                transform.DOKill();
+            }
             TileState = ETileState.Safe;
         }
     }
+    private IEnumerator CO_EnterDangerState()
+    {
+        transform.DOShakePosition(
+            duration: _dangerDelay,
+            strength: new Vector3(_shakeStrength, 0, 0),
+            vibrato: _shakeFrequency,
+            randomness: 0,
+            snapping: false,
+            fadeOut: false
+        );
 
+        yield return new WaitForSeconds(_dangerDelay);
+
+        if (_temperature > 40)
+        {
+            TileState = ETileState.Danger;
+        }
+        _co_dangerTimer = null;
+    }
     private IEnumerator CO_DestroyTile()
     {
         transform.DOShakePosition(
@@ -318,13 +352,13 @@ public class TileNode : MonoBehaviour
         if (timer == 0)
             return;
 
-        DOVirtual.DelayedCall(timer, () => 
+        DOVirtual.DelayedCall(timer, () =>
         {
             _temperatureDecreaseByBuilding += temperature;
             doneCallback?.Invoke();
         });
     }
-    
+
 #if UNITY_EDITOR
     private void OnValidate()
     {
