@@ -18,9 +18,9 @@ public class TileNode : MonoBehaviour
     private float _temperature;
     private bool _isDestroy = false;
     private bool _onMana = false;
+    public bool OnMana => _onMana;
     private bool _onBuilding = false;
     private float _elapsedTime = 0f;
-    private int _manaLevel = 1;
     private bool _onWall = false;
     private int _wallCount = 0;
     public bool OnBuilding => _onBuilding;
@@ -28,10 +28,12 @@ public class TileNode : MonoBehaviour
     private Action<EManaLevel> _onBuildingCollisionAction;
     private Building _currentBuilding;
     private Mana _currentMana;
+    public Mana CurrentMana => _currentMana;
 
     [Header("Information")]
     [SerializeField] private Vector2 _coordinate;
     [SerializeField] private ETileState _tileState;
+    [SerializeField] private GameObject _manaPrefab;
 
     public ETileState TileState
     {
@@ -99,11 +101,55 @@ public class TileNode : MonoBehaviour
             _leftWall.OnDeactivateWall += OnDeactivateWallAction;
         }
     }
-
-    public void SetMana(Mana mana)
+    public void ReceiveMana(Mana manaComponent)
     {
+        // 만약 이 타일에 이미 다른 마나가 있었다면 안전하게 파괴합니다.
+        if (_onMana && _currentMana != null)
+        {
+            Destroy(_currentMana.gameObject);
+        }
+
+        _currentMana = manaComponent;
         _onMana = true;
-        _currentMana = mana;
+    }
+
+    public void ClearMana()
+    {
+        _currentMana = null;
+        _onMana = false;
+    }
+    public void SetMana(int level = 1)
+    {
+        if (_manaPrefab == null)
+        {
+            Debug.LogError("Mana Prefab이 할당되지 않았습니다!");
+            return;
+        }
+        if(CurrentMana != null)
+        {
+            Destroy(CurrentMana.gameObject);
+        }
+
+        GameObject manaObject = Instantiate(_manaPrefab, this.transform.position, Quaternion.identity);
+
+        _currentMana = manaObject.GetComponent<Mana>();
+        _currentMana.SetLevel(level);
+
+        if (_currentMana != null)
+        {
+            _onMana = true;
+        }
+        else
+        {
+            Debug.LogError("생성된 마나 프리팹에 'Mana' 스크립트가 없습니다!");
+        }
+    }
+
+    public void UnsetMana()
+    {
+        Destroy(_currentMana.gameObject);
+        _currentMana = null;
+        _onMana = false;
     }
 
     private void Update()
