@@ -2062,6 +2062,7 @@ MonoBehaviour:
   - {fileID: 132212590}
   - {fileID: 1700888090}
   - {fileID: 1245130125}
+  _manaMoveDuration: 0.15
 --- !u!4 &414249661
 Transform:
   m_ObjectHideFlags: 0
@@ -12699,9 +12700,57 @@ PrefabInstance:
       propertyPath: textCost
       value: 
       objectReference: {fileID: 1619882419}
+    - target: {fileID: 4814147477662546333, guid: 52f977c046776d948a4dc66971468d3e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4814147477662546333, guid: 52f977c046776d948a4dc66971468d3e, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4814147477662546333, guid: 52f977c046776d948a4dc66971468d3e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4814147477662546333, guid: 52f977c046776d948a4dc66971468d3e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5656859531739256771, guid: 52f977c046776d948a4dc66971468d3e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5656859531739256771, guid: 52f977c046776d948a4dc66971468d3e, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5656859531739256771, guid: 52f977c046776d948a4dc66971468d3e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5656859531739256771, guid: 52f977c046776d948a4dc66971468d3e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6377073394722194705, guid: 52f977c046776d948a4dc66971468d3e, type: 3}
       propertyPath: m_Name
       value: UI_Shop
+      objectReference: {fileID: 0}
+    - target: {fileID: 8891395594858530582, guid: 52f977c046776d948a4dc66971468d3e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8891395594858530582, guid: 52f977c046776d948a4dc66971468d3e, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8891395594858530582, guid: 52f977c046776d948a4dc66971468d3e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8891395594858530582, guid: 52f977c046776d948a4dc66971468d3e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12716,6 +12765,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1577874737}
     m_Modifications:
+    - target: {fileID: 6212992497367642916, guid: 653a9a28f80df4148b48c195ac642706, type: 3}
+      propertyPath: m_Name
+      value: Text_Currency
+      objectReference: {fileID: 0}
     - target: {fileID: 7936789376404315018, guid: 653a9a28f80df4148b48c195ac642706, type: 3}
       propertyPath: m_Name
       value: UI_Gold

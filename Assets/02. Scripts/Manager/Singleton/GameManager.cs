@@ -1,9 +1,14 @@
+using Core.Scripts;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
+    [SerializeField] private TextMeshProUGUI textGold;
+    
     private float _elapsedTime = 0f;
     private bool _isPaused = false;
+    public int Gold { get; private set; } = 5;
 
     /// <summary>
     /// 게임 시작 후 경과 시간 (초)
@@ -14,6 +19,12 @@ public class GameManager : Singleton<GameManager>
     /// 게임 일시정지 상태
     /// </summary>
     public bool IsPaused => _isPaused;
+
+    private void Start()
+    {
+        textGold = GameObject.Find("Text_Currency").GetComponent<TextMeshProUGUI>();
+        textGold.text = Gold.ToString();
+    }
 
     private void Update()
     {
@@ -32,5 +43,24 @@ public class GameManager : Singleton<GameManager>
     public void ResumeGame()
     {
         _isPaused = false;
+    }
+    
+    public bool IsCanBuyBuilding(int cost)
+    {
+        return Gold >= cost;
+    }
+    
+    public void AddGold(int cost)
+    {
+        if (Gold - cost < 0)
+        {
+            Debug.LogWarning("Not enough gold to add.");
+            return;
+        }
+        
+        var previousGold = Gold;
+        Gold += cost;
+        
+        Utils.NumberCountingEffect(textGold, previousGold, Gold);
     }
 }

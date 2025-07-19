@@ -2,11 +2,15 @@
 using System;
 using System.Collections;
 using System.Numerics;
+using Core.Scripts.Manager;
+using DG.Tweening;
 
 // ----- Unity
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 
 namespace Core.Scripts
@@ -110,6 +114,14 @@ namespace Core.Scripts
         {
             var formattedValue = $"{value:#,##0.##}";
             return formattedValue == "" ? "0" : formattedValue;
+        }
+        
+        public static void OnWrongSituationShake(Transform rectTrans, bool isPlaySound = true, int multiply = 1)
+        {
+            // TODO : Sound
+            rectTrans.DOShakeRotation(SHAKE_DURATION * multiply, new Vector3(0, 0, SHAKE_STRENGTH * multiply), SHAKE_VIBRATO * multiply, SHAKE_RANDOMNESS)
+                .OnComplete(() => rectTrans.rotation = Quaternion.identity);
+        
         }
     }
 }

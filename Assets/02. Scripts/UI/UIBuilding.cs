@@ -33,6 +33,12 @@ public class UIBuilding : UIBase
     {
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
+
+        if (!GameManager.Instance.IsCanBuyBuilding(cost))
+        {
+            Utils.OnWrongSituationShake(transform, true, 2);
+            return;
+        }
         
         var mousePos = Camera.main.ScreenToWorldPoint(eventData.position);
         mousePos.z = 0;
@@ -93,8 +99,10 @@ public class UIBuilding : UIBase
         if (!_isDragging || _spawnedBuilding == null)
             return;
 
-        if (_isAttached)
+        if (_isAttached && GameManager.Instance.IsCanBuyBuilding(cost))
         {
+            GameManager.Instance.AddGold(-cost);
+            
             if (_spawnedBuilding.BuildingType == Define.EBuildingType.Wall)
             {
                 _currentAttachedWall.OnFinishBuild();
