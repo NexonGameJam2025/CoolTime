@@ -6,7 +6,10 @@ using DG.Tweening;
 
 public enum EManaLevel
 {
-    One, Two, Three
+    One = 0,
+    Two = 1,
+    Three = 2,
+    None = -1,
 }
 
 public enum ETileState
@@ -183,7 +186,6 @@ public class TileNode : MonoBehaviour
         if (_isDestroy) return;
 
         float t = GameManager.Instance.ElapsedTime;
-        Debug.Log($"[UpdateTemperature] _temperatureDecreaseByBuilding: {_temperatureDecreaseByBuilding}");
         _temperature = 35f + (_twoCoefficient * t * t) + (_oneCoefficient * t) + _temperatureDecreaseByBuilding;
         
 
@@ -309,14 +311,18 @@ public class TileNode : MonoBehaviour
         _onBuilding = true;
     }
 
-    public void ApplyTemperature(int temperature, int timer = 0, bool isPermanent = false)
+    public void ApplyTemperature(int temperature, int timer = 0, Action doneCallback = null)
     {
         _temperatureDecreaseByBuilding -= temperature;
 
-        if (isPermanent)
+        if (timer == 0)
             return;
 
-        DOVirtual.DelayedCall(timer, () => _temperatureDecreaseByBuilding += temperature );
+        DOVirtual.DelayedCall(timer, () => 
+        {
+            _temperatureDecreaseByBuilding += temperature;
+            doneCallback?.Invoke();
+        });
     }
     
 #if UNITY_EDITOR

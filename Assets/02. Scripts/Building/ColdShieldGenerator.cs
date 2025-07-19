@@ -4,7 +4,7 @@ using UnityEngine;
 public class ColdShieldGenerator : Building
 {
     [SerializeField] private SpriteRenderer spriteRendererBuilding;
-    [SerializeField] private Sprite spriteBuilding;
+    [SerializeField] private Sprite[] spriteBuilding;
     [SerializeField] private Sprite spriteOnStartBuilding;
     
     protected readonly Dictionary<EManaLevel, int> TimerInfo = new()
@@ -17,8 +17,8 @@ public class ColdShieldGenerator : Building
     protected readonly Dictionary<EManaLevel, int> TemperatureInfo = new()
     {
         { EManaLevel.One, 7 },
-        { EManaLevel.Two, 13 },
-        { EManaLevel.Three, 18 }
+        { EManaLevel.Two, 17 },
+        { EManaLevel.Three, 25 }
     };
 
     public override void SetSortingLayer(string layerName)
@@ -32,7 +32,7 @@ public class ColdShieldGenerator : Building
     {
         base.OnDragging();
         
-        spriteRendererBuilding.sprite = spriteBuilding;
+        spriteRendererBuilding.sprite = spriteBuilding[0];
     }
     
     public override void OnStartBuild(Vector2 coordinate)
@@ -46,47 +46,44 @@ public class ColdShieldGenerator : Building
     {
         base.OnFinishBuild();
         
-        spriteRendererBuilding.sprite = spriteBuilding;
+        spriteRendererBuilding.sprite = spriteBuilding[0];
     }
     
     public override void OnCollisionMana(EManaLevel manaLevel)
     {
+        Debug.Log($"OnCollisionMana: {manaLevel}");
         var timer = TimerInfo[manaLevel];
         var temperature = TemperatureInfo[manaLevel];
         var manaCost = ManaCostInfo[manaLevel];
         GameManager.Instance.AddGold(manaCost);
 
-        // TODO: 이펙트 적용
-        switch (manaLevel)
+        Debug.Log($"CurrentManaLevel: {CurrentManaLevel}, InManaLevel: {manaLevel}");
+        if ((int)CurrentManaLevel > (int)manaLevel)
         {
-            case EManaLevel.One:
-                foreach (var (x, y) in FiveDirections)
-                {
-                    var dx = (int)Coordinate.x + x;
-                    var dy = (int)Coordinate.y + y;
-                    if (dx < 0 || dx >= MaxIndex || dy < 0 || dy >= MaxIndex)
-                        continue;
-                    
-                    TileNodeSystem.TileNodeGrid[dy, dx].ApplyTemperature(temperature, timer);
-                }
-                break;
-            
-            case EManaLevel.Two:
-            case EManaLevel.Three:
-                foreach (var (x, y) in NineDirections)
-                {
-                    var dx = (int)Coordinate.x + x;
-                    var dy = (int)Coordinate.y + y;
-                    if (dx < 0 || dx >= MaxIndex || dy < 0 || dy >= MaxIndex)
-                        continue;
-                    
-                    TileNodeSystem.TileNodeGrid[dy, dx].ApplyTemperature(temperature, timer);
-                }
-                break;
-            default:
-                Debug.Log($"Invalid mana level: {manaLevel}");
-                break;
+            return;
+        }
+        else if ((int)CurrentManaLevel == (int)manaLevel)
+        {
+            // TODO : 타이머 갱신
+            return;
         }
         
+        spriteRendererBuilding.sprite = spriteBuilding[(int)manaLevel + 1];
+        
+        // TODO: 이펙트 적용
+        
+        foreach (var (x, y) in NineDirections)
+        {
+            var dx = (int)Coordinate.x + x;
+            var dy = (int)Coordinate.y + y;
+            if (dx < 0 || dx >= MaxIndex || dy < 0 || dy >= MaxIndex)
+                continue;
+                    
+            TileNodeSystem.TileNodeGrid[dy, dx].ApplyTemperature(temperature, timer, () =>
+            {
+                CurrentManaLevel = EManaLevel.None;
+                spriteRendererBuilding.sprite = spriteBuilding[0];
+            });
+        }
     }
 }

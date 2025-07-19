@@ -87,24 +87,24 @@ public class FrozenBeamLauncher : Building
             if (hit.TryGetComponent<TileNode>(out var tileNode))
             {
                 tileNode.ToggleSortingLayerUp(false);
-                var temperature = TemperatureInfo[_currentManaLevel];
+                var temperature = TemperatureInfo[CurrentManaLevel];
                 
                 _isClicked = false;
                 IsOnMana = false;
                 
-                switch (_currentManaLevel)
+                switch (CurrentManaLevel)
                 {
                     case EManaLevel.One:
-                        tileNode.ApplyTemperature(temperature, 0, true);
+                        tileNode.ApplyTemperature(temperature, 0);
                         break;
                 
                     case EManaLevel.Two:
                         var randomIndex = UnityEngine.Random.Range(1, FiveDirections.Count);
                         var (x, y) = FiveDirections[randomIndex];
-                        tileNode.ApplyTemperature(temperature, 0, true);
+                        tileNode.ApplyTemperature(temperature, 0);
                         var dx = (int)Coordinate.x + x;
                         var dy = (int)Coordinate.y + y;
-                        TileNodeSystem.TileNodeGrid[dy, dx].ApplyTemperature(temperature, 0, true);
+                        TileNodeSystem.TileNodeGrid[dy, dx].ApplyTemperature(temperature, 0);
                         break;
                 
                     case EManaLevel.Three:
@@ -112,7 +112,7 @@ public class FrozenBeamLauncher : Building
                         {
                             var dx2 = (int)Coordinate.x + ix;
                             var dy2 = (int)Coordinate.y + iy;
-                            TileNodeSystem.TileNodeGrid[dy2, dx2].ApplyTemperature(temperature, 0, true);
+                            TileNodeSystem.TileNodeGrid[dy2, dx2].ApplyTemperature(temperature, 0);
                         }
                         break;
                 }
@@ -127,11 +127,11 @@ public class FrozenBeamLauncher : Building
         var manaCost = ManaCostInfo[manaLevel];
         GameManager.Instance.AddGold(manaCost);
         
-        if (_currentManaLevel >= manaLevel)
+        if (CurrentManaLevel >= manaLevel)
             return;
         
         IsOnMana = true;
-        _currentManaLevel = manaLevel;
+        CurrentManaLevel = manaLevel;
         
         // TODO : 마나 레벨에 따른 스프라이트 변경
     }

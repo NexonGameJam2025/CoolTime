@@ -18,7 +18,7 @@ public abstract class Building : MonoBehaviour
     protected TileNodeSystem TileNodeSystem;
     protected BuilderSystem BuilderSystem;
     protected Vector2 Coordinate;
-    protected EManaLevel _currentManaLevel = 0;
+    protected EManaLevel CurrentManaLevel = EManaLevel.None;
 
     protected readonly int MaxIndex = 7;
     protected readonly List<(int, int)> FiveDirections = new()

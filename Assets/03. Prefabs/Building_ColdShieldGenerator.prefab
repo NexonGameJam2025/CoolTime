@@ -49,7 +49,11 @@ MonoBehaviour:
   buildingType: 1
   builderPrefab: {fileID: 7835972357219540927, guid: 149595be88e40654e90f867d50850dc4, type: 3}
   spriteRendererBuilding: {fileID: 7935868398948573962}
-  spriteBuilding: {fileID: 6860911490723397158, guid: f4440fd42ee0a0e439e6a48fe2c9b055, type: 3}
+  spriteBuilding:
+  - {fileID: 6944610568166405015, guid: af4d0f05452a59a4cbe1b17d97832714, type: 3}
+  - {fileID: 6860911490723397158, guid: f4440fd42ee0a0e439e6a48fe2c9b055, type: 3}
+  - {fileID: 3933799214955465964, guid: 87c649649039dba4290aae0d04f3177c, type: 3}
+  - {fileID: 6935221634363932847, guid: a113fe851d7b85c488965113dff01bc8, type: 3}
   spriteOnStartBuilding: {fileID: -34177259155763263, guid: 78032b7d0a3c6a34e89c867debf38eb3, type: 3}
 --- !u!1 &3779738231311080230
 GameObject:
