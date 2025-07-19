@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using Core.Scripts.Manager;
 using Core.Scripts.Table;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
 namespace Core.Scripts
@@ -16,7 +18,9 @@ namespace Core.Scripts
         // --------------------------------------------------
         [Header("1. Loading Group")]
         [SerializeField] private Slider slider = null;
-        [SerializeField] private TextMeshProUGUI textTip = null;
+        [SerializeField] private TextMeshProUGUI textTipOne = null;
+        [SerializeField] private TextMeshProUGUI textTipTwo = null;
+        
 
         // --------------------------------------------------
         // Variables
@@ -32,14 +36,37 @@ namespace Core.Scripts
     
         private bool _isInitialized = false;
         private bool _isLoadingStop = false;
+        private bool _isCanLoadScene = false;
+        
+        private string _targetLoadingTextOne = "> 냉각 가스 채우는 중...\n> 얼음 총에 냉기 충전 중...\n> 고글 닦는 중...\n> 펭귄 부츠 미끄럼 방지 확인 중...\n> 출발 전 발 스트레칭 중...\n> 수달과 악수 중...\n> 얼음 스캔 중... 눈송이 개수 확인 중...\n> 적당히 차가운 농담 준비 중...";
+        private string _targetLoadingTextTwo = "출발 준비 완료됐어요!";
     
         // --------------------------------------------------
         // Functions - Event
         // --------------------------------------------------
+
+        private void Update()
+        {
+            if (_isCanLoadScene && Mouse.current.leftButton.wasPressedThisFrame)
+            {
+                Managers.LoadingScene.LoadScene(nameof(Define.ESceneType.MainScene));
+            }
+        }
         private IEnumerator Start()
         {
             slider.value = 0f;
-            slider.gameObject.SetActive(true);
+
+            textTipOne.DoTextClean(_targetLoadingTextOne, 5.0f).OnComplete(() =>
+            {
+                DOVirtual.DelayedCall(0.3f, () =>
+                {
+                    textTipTwo.DoTextClean(_targetLoadingTextTwo, 0.4f)
+                    .OnComplete(() => 
+                    {            
+                        _isCanLoadScene = true;
+                    });
+                });
+            });
         
             SetAction();
             _totalActionCount = _actions.Count;
@@ -113,10 +140,6 @@ namespace Core.Scripts
         {
             slider.value = 1f;
             slider.gameObject.SetActive(false);
-            textTip.gameObject.SetActive(false);
-        
-            // Start Button Set
-            Managers.LoadingScene.LoadScene(nameof(Define.ESceneType.MainScene));
         }
     
         // ----- UI Group
@@ -124,7 +147,6 @@ namespace Core.Scripts
         {
             if (!_isLoadingStop && _currentValue > 0.4f)
             {
-                textTip.text = "Loading...";
                 _isLoadingStop = true;
             }
             

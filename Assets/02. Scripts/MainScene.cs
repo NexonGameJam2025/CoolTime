@@ -1,11 +1,13 @@
 using Core.Scripts;
 using Core.Scripts.Manager;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 
 public class MainScene : BaseScene
 {
     [SerializeField] private Transform transPenguin;
+    
     protected override void Awake()
     {
         base.Awake();
