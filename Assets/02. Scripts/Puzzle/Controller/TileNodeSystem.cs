@@ -52,6 +52,17 @@ public class TileNodeSystem : MonoBehaviour
 
         if (hasMoved)
         {
+            bool didMerge = finalActionPlan.Exists(action => action.Sacrifice != null);
+
+            if (didMerge)
+            {
+                SoundManager.Instance.PlaySFX_CustomStart("FrostUpgrade", 0.25f);
+            }
+            else
+            {
+                SoundManager.Instance.PlaySFX("WindBlow");
+            }
+
             yield return AnimateMoves(finalActionPlan);
             FinalizeState(finalActionPlan);
         }

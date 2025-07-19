@@ -13,11 +13,15 @@ MonoBehaviour:
   m_Name: BGM Data
   m_EditorClassIdentifier: 
   soundClips:
-  - name: "\uAC8C\uC784 \uD50C\uB808\uC774 \uBE0C\uAE08"
+  - name: GamePlay_Intro
+    description: "\uD0C0\uC774\uD2C0 \uBE0C\uAE08"
+    clip: {fileID: 8300000, guid: 0c49db5064c95d747b872e9c17358802, type: 3}
+    volume: 0.366
+  - name: GamePlay_Loop
     description: "\uAC8C\uC784 \uD50C\uB808\uC774 \uBE0C\uAE08"
-    clip: {fileID: 8300000, guid: f323a3793a0d0424ba6008b25efa9fa3, type: 3}
-    volume: 0
-  - name: "\uD0C0\uC774\uD2C0 \uBE0C\uAE08"
+    clip: {fileID: 8300000, guid: e63af9bc6ae6b034c90d66f43e048063, type: 3}
+    volume: 0.056
+  - name: Title
     description: "\uD0C0\uC774\uD2C0 \uBE0C\uAE08"
     clip: {fileID: 8300000, guid: 69969d74bbd9968418db46dc848a29d1, type: 3}
-    volume: 0
+    volume: 0.366

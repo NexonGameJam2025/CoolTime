@@ -7,6 +7,11 @@ public class ManaSystem : MonoBehaviour
     [SerializeField] private GameObject _manaGO;
     [SerializeField] private TileNodeSystem _nodeSystem;
 
+    private void Awake()
+    {
+        SoundManager.Instance.PlayBGMWithIntro("GamePlay_Intro", "GamePlay_Loop", 1f);
+    }
+
     private void Start()
     {
         CreateManaOnRandomSafeTiles(6);
@@ -35,7 +40,7 @@ public class ManaSystem : MonoBehaviour
         for (int i = 0; i < spawnCount; i++)
         {
             TileNode randomTile = shuffledTiles[i];
-            
+
             randomTile.SetMana();
         }
     }

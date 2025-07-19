@@ -13,17 +13,21 @@ public class UIMainPopup : UIPopup
     public override void OnAwake()
     {
         base.OnAwake();
+        SoundManager.Instance.PlayBGM("Title");
         
         buttonStart.onClick.AddListener(() =>
         {
             Managers.LoadingScene.LoadScene(nameof(Define.ESceneType.PuzzleSceneJJM));
+            SoundManager.Instance.PlaySFX("Click");
         });
         buttonHelp.onClick.AddListener(() => 
         {
             // Managers.UI.ShowPopupUI<UIHelpPopup>();
+            SoundManager.Instance.PlaySFX("Click");
         });
         buttonExit.onClick.AddListener(() => 
         {
+            SoundManager.Instance.PlaySFX("Click");
 #if UNITY_EDITOR
             UnityEditor.EditorApplication.isPlaying = false;
 #else

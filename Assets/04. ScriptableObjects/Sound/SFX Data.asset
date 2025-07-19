@@ -13,14 +13,14 @@ MonoBehaviour:
   m_Name: SFX Data
   m_EditorClassIdentifier: 
   soundClips:
-  - name: 
+  - name: WindBlow
     description: "\uC870\uC791 \uC0AC\uC6B4\uB4DC"
-    clip: {fileID: 8300000, guid: 1a3ecb5d59ea64d41a9a54c8288e8ba6, type: 3}
-    volume: 0
-  - name: 
+    clip: {fileID: 8300000, guid: 4bc4bef3327251c458a6b368733bf7c6, type: 3}
+    volume: 0.4
+  - name: FrostUpgrade
     description: "\uB0C9\uAE30 \uD569\uCCD0\uC9C0\uB294 \uC18C\uB9AC"
     clip: {fileID: 8300000, guid: a0bd3112c8889b04ea959c4e6598f410, type: 3}
-    volume: 0
+    volume: 0.4
   - name: 
     description: "\uAC74\uBB3C\uC5D0 \uB0C9\uAE30 \uC8FC\uC785\uB418\uB294 \uC18C\uB9AC"
     clip: {fileID: 8300000, guid: b304bffc4d641b54f9bca6db32ab73c2, type: 3}
@@ -41,10 +41,10 @@ MonoBehaviour:
     description: "\uC131\uACFC\uD45C \uB3C4\uC7A5 \uC18C\uB9AC"
     clip: {fileID: 8300000, guid: 3563c55faa34aff43b7a0380b297171a, type: 3}
     volume: 0
-  - name: 
+  - name: Click
     description: "\uD074\uB9AD\uC74C"
     clip: {fileID: 8300000, guid: 45b09b676968a6041b06a10410e38a47, type: 3}
-    volume: 0
+    volume: 1
   - name: 
     description: "\uB0C9\uAE30 \uBCF4\uD638\uB9C9 \uBC1C\uB3D9\uC74C"
     clip: {fileID: 8300000, guid: f4656ab3641674140b599e0ffc6ca89e, type: 3}
