@@ -11,6 +11,8 @@ public class FrozenBeamLauncher : Building
     [SerializeField] private Sprite[] spriteBuilding;
     [SerializeField] private BoxCollider2D boxCollider2D;
     [SerializeField] private GameObject cannonEffectPrefab;
+    [SerializeField] private Sprite[] levelTwoSprites;
+    [SerializeField] private Sprite[] levelThreeSprites;
     
     private List<(int, int)> VerticalDirections = new()
     {
@@ -91,6 +93,7 @@ public class FrozenBeamLauncher : Building
         base.OnDeActivate();
         
         spriteRendererBuilding.sprite = spriteBuilding[0];
+        OnStartBuildSpriteTween.Kill();
     }
 
     private void Update()
@@ -133,6 +136,7 @@ public class FrozenBeamLauncher : Building
                 _isClicked = false;
                 IsOnMana = false;
                 spriteRendererBuilding.sprite = spriteBuilding[0];
+                OnStartBuildSpriteTween.Kill();
                 
                 switch (CurrentManaLevel)
                 {
@@ -206,7 +210,38 @@ public class FrozenBeamLauncher : Building
         
         IsOnMana = true;
         CurrentManaLevel = manaLevel;
-        spriteRendererBuilding.sprite = spriteBuilding[(int)manaLevel + 1];
+
+        if ((int)manaLevel + 1 == 2)
+        {
+            OnStartBuildSpriteTween.Kill();
+            OnStartBuildSpriteTween = DOTween.Sequence()
+                .AppendCallback(() => spriteRendererBuilding.sprite = levelTwoSprites[0])
+                .AppendInterval(CONSTRUCT_ANIM_INTERVAL)
+                .AppendCallback(() => spriteRendererBuilding.sprite = levelTwoSprites[1])
+                .AppendInterval(CONSTRUCT_ANIM_INTERVAL)
+                .SetLoops(-1);
+
+            OnStartBuildSpriteTween.SetLink(gameObject);
+            OnStartBuildSpriteTween.Play();
+        }
+        else if ((int)manaLevel + 1 == 3)
+        {
+            OnStartBuildSpriteTween.Kill();
+            OnStartBuildSpriteTween = DOTween.Sequence()
+                .AppendCallback(() => spriteRendererBuilding.sprite = levelThreeSprites[0])
+                .AppendInterval(CONSTRUCT_ANIM_INTERVAL)
+                .AppendCallback(() => spriteRendererBuilding.sprite = levelThreeSprites[1])
+                .AppendInterval(CONSTRUCT_ANIM_INTERVAL)
+                .SetLoops(-1);
+
+            OnStartBuildSpriteTween.SetLink(gameObject);
+            OnStartBuildSpriteTween.Play();
+        }
+        else
+        {
+            OnStartBuildSpriteTween.Kill();
+            spriteRendererBuilding.sprite = spriteBuilding[(int)manaLevel + 1];
+        }
     }
 
     public void OnClickHandler(Action doneCallback = null)
