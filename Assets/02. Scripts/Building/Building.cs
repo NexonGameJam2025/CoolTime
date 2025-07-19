@@ -10,6 +10,7 @@ public abstract class Building : MonoBehaviour
     [SerializeField] private GameObject builderPrefab;
     
     public bool IsInit { get; private set; } = false;
+    public bool IsConstructing { get; private set; } = false;
     public Define.EBuildingType BuildingType => buildingType;
     protected readonly float PreviewImageOpacity = 0.5f;
     protected TileNodeSystem TileNodeSystem;
@@ -45,6 +46,7 @@ public abstract class Building : MonoBehaviour
     public virtual void OnStartBuild(Vector2 coordinate)
     {
         IsInit = true;
+        IsConstructing = true;
         Coordinate = coordinate;
         
         int start;
@@ -59,6 +61,7 @@ public abstract class Building : MonoBehaviour
 
     public virtual void OnFinishBuild()
     {
+        IsConstructing = false;
         TogglePreviewImage(false);
     }
 
