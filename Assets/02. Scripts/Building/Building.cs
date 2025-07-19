@@ -11,6 +11,7 @@ public abstract class Building : MonoBehaviour
     [SerializeField] private Define.EBuildingType buildingType = Define.EBuildingType.None;
     [SerializeField] private GameObject builderPrefab;
     [SerializeField] protected Sprite[] spriteOnStartBuilding;
+    [SerializeField] private ParticleSystem particleSystem;
     
     public bool IsInit { get; private set; } = false;
     public bool IsConstructing { get; private set; } = false;
@@ -78,6 +79,10 @@ public abstract class Building : MonoBehaviour
 
     public virtual void OnStartBuild()
     {
+        if (BuildingType != Define.EBuildingType.Wall)
+        {
+            particleSystem.Play();
+        }
     }
 
     public virtual void OnFinishBuild()
@@ -85,6 +90,10 @@ public abstract class Building : MonoBehaviour
         IsInit = true;
         IsConstructing = false;
         TogglePreviewImage(false);
+        if (BuildingType != Define.EBuildingType.Wall)
+        {
+            particleSystem.Stop();
+        }
         OnFinishBuildEvent?.Invoke();
     }
 
