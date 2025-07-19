@@ -1,4 +1,5 @@
 using Core.Scripts;
+using Core.Scripts.Manager;
 using UnityEngine;
 
 public class MainScene : BaseScene
@@ -13,7 +14,7 @@ public class MainScene : BaseScene
     public override void Init()
     {
         base.Init();
-        
-        Debug.Log("MainScene initialized.");
+
+        Managers.UI.ShowPopupUI<UIMainPopup>();
     }
 }

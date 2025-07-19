@@ -15,7 +15,7 @@ namespace Core.Scripts.Manager
             var prefab = Resources.Load<GameObject>($"Prefabs/{path}");
             if (!prefab)
             {
-                Debug.LogError("$[ResourceManager.Load] Failed to load prefab : {path}");
+                Debug.LogError($"[ResourceManager.Load] Failed to load prefab : {path}");
                 return null;
             }
             var go = Object.Instantiate(prefab, parent);
