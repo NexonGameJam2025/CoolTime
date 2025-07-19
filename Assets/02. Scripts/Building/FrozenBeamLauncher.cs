@@ -11,7 +11,8 @@ public class FrozenBeamLauncher : Building
     [SerializeField] BoxCollider2D boxCollider2D;
     
     private EManaLevel _currentManaLevel = 0;
-    private bool _isOnMana = false;
+    public bool IsOnMana { get; private set; } = false;
+
     private bool _isClicked = false;
     private TileNode _lastHoveredNode;
     private Action _afterSelectHandler;
@@ -54,7 +55,7 @@ public class FrozenBeamLauncher : Building
 
     private void Update()
     {
-        if (!_isClicked || !IsInit || !_isOnMana)
+        if (!_isClicked || !IsInit || !IsOnMana)
             return;
         
         var mousePos = Mouse.current.position.ReadValue();
@@ -119,7 +120,7 @@ public class FrozenBeamLauncher : Building
     
     public override void OnCollisionMana(EManaLevel manaLevel)
     {
-        _isOnMana = true;
+        IsOnMana = true;
         _currentManaLevel = manaLevel;
         
         // TODO : 마나 레벨에 따른 스프라이트 변경

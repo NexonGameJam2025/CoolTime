@@ -45,7 +45,6 @@ public abstract class Building : MonoBehaviour
 
     public virtual void OnStartBuild(Vector2 coordinate)
     {
-        IsInit = true;
         IsConstructing = true;
         Coordinate = coordinate;
         
@@ -61,6 +60,7 @@ public abstract class Building : MonoBehaviour
 
     public virtual void OnFinishBuild()
     {
+        IsInit = true;
         IsConstructing = false;
         TogglePreviewImage(false);
     }

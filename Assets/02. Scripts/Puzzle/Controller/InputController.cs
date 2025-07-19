@@ -47,7 +47,7 @@ public class InputController : MonoBehaviour
 
             if (hit && hit.transform.gameObject.TryGetComponent<FrozenBeamLauncher>(out var building))
             {
-                if (!building.IsInit)
+                if (!building.IsInit || !building.IsOnMana)
                     return;
 
                 if (_isClickedFrozenBeamLauncher)
