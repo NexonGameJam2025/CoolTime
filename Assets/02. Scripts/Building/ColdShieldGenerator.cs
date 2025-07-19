@@ -8,6 +8,8 @@ public class ColdShieldGenerator : Building
     [SerializeField] private Sprite[] spriteBuilding;
     [SerializeField] private Animator animator;
     
+    private bool _isActivated = false;
+    
     protected readonly Dictionary<EManaLevel, int> TimerInfo = new()
     {
         { EManaLevel.One, 20 },
@@ -96,7 +98,13 @@ public class ColdShieldGenerator : Building
             // TODO : 타이머 갱신
             return;
         }
-        
+
+        if (_isActivated)
+        {
+            RemoveOriginPower();
+        }
+
+        _isActivated = true;
         CurrentManaLevel = manaLevel;
         spriteRendererBuilding.sprite = spriteBuilding[(int)manaLevel + 1];
         
@@ -115,7 +123,22 @@ public class ColdShieldGenerator : Building
                 CurrentManaLevel = EManaLevel.None;
                 spriteRendererBuilding.sprite = spriteBuilding[0];
                 animator.gameObject.SetActive(false);
+                _isActivated = false;
             });
+        }
+    }
+
+    private void RemoveOriginPower()
+    {
+        var temperature = TemperatureInfo[CurrentManaLevel];
+        foreach (var (x, y) in NineDirections)
+        {
+            var dx = (int)Coordinate.x + x;
+            var dy = (int)Coordinate.y + y;
+            if (dx < 0 || dx >= MaxIndex || dy < 0 || dy >= MaxIndex)
+                continue;
+                    
+            TileNodeSystem.TileNodeGrid[dy, dx].ApplyTemperature(-temperature);
         }
     }
 }
