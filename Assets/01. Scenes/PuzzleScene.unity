@@ -8932,8 +8932,6 @@ MonoBehaviour:
   - {fileID: 293389631}
   - {fileID: 141398446}
   builderPrefab: {fileID: 7835972357219540927, guid: 149595be88e40654e90f867d50850dc4, type: 3}
-  BUILDER_MOVE_SPEED: 5
-  BUILDER_BUILD_EFFECT_DURATION: 1
 --- !u!4 &1593578018
 Transform:
   m_ObjectHideFlags: 0

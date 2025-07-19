@@ -1,0 +1,103 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1c29d1272e967ab4493bb865a3c960ed, type: 3}
+  m_Name: SFX Data
+  m_EditorClassIdentifier: 
+  soundClips:
+  - name: 
+    description: "\uC870\uC791 \uC0AC\uC6B4\uB4DC"
+    clip: {fileID: 8300000, guid: 1a3ecb5d59ea64d41a9a54c8288e8ba6, type: 3}
+    volume: 0
+  - name: 
+    description: "\uB0C9\uAE30 \uD569\uCCD0\uC9C0\uB294 \uC18C\uB9AC"
+    clip: {fileID: 8300000, guid: a0bd3112c8889b04ea959c4e6598f410, type: 3}
+    volume: 0
+  - name: 
+    description: "\uAC74\uBB3C\uC5D0 \uB0C9\uAE30 \uC8FC\uC785\uB418\uB294 \uC18C\uB9AC"
+    clip: {fileID: 8300000, guid: b304bffc4d641b54f9bca6db32ab73c2, type: 3}
+    volume: 0
+  - name: 
+    description: "\uAC74\uCD95 \uC2DC\uC791\uB418\uB294 \uC18C\uB9AC"
+    clip: {fileID: 8300000, guid: fa107b47624a1ac4a8eaf01829f85ec9, type: 3}
+    volume: 0
+  - name: 
+    description: "\uB0C9\uB3D9\uBE54 \uBC1C\uC0AC\uAE30"
+    clip: {fileID: 8300000, guid: 355cc02d0883f68418dec01bd0ce284d, type: 3}
+    volume: 0
+  - name: 
+    description: "\uC131\uACFC\uD45C \uC4F0\uB294 \uC18C\uB9AC"
+    clip: {fileID: 8300000, guid: 6aa25641068c78f49842dc981a31fd26, type: 3}
+    volume: 0
+  - name: 
+    description: "\uC131\uACFC\uD45C \uB3C4\uC7A5 \uC18C\uB9AC"
+    clip: {fileID: 8300000, guid: 3563c55faa34aff43b7a0380b297171a, type: 3}
+    volume: 0
+  - name: 
+    description: "\uD074\uB9AD\uC74C"
+    clip: {fileID: 8300000, guid: 45b09b676968a6041b06a10410e38a47, type: 3}
+    volume: 0
+  - name: 
+    description: "\uB0C9\uAE30 \uBCF4\uD638\uB9C9 \uBC1C\uB3D9\uC74C"
+    clip: {fileID: 8300000, guid: f4656ab3641674140b599e0ffc6ca89e, type: 3}
+    volume: 0
+  - name: 
+    description: "\uB0C9\uB3D9 \uBE54 \uBC1C\uC0AC\uAE30 \uAC00\uB3D9 \uD6A8\uACFC\uC74C"
+    clip: {fileID: 8300000, guid: d8b04ba02cb1e4c419b3c14dec4c4ef4, type: 3}
+    volume: 0
+  - name: 
+    description: "\uD0C0\uC77C 40\uB3C4 \uB118\uC5C8\uC744 \uB54C"
+    clip: {fileID: 8300000, guid: 70a1b5ea845456a41a8881e040412a8c, type: 3}
+    volume: 0
+  - name: 
+    description: "\uD0C0\uC77C \uC548\uC804\uD574\uC84C\uC744 \uB54C"
+    clip: {fileID: 8300000, guid: 88b0be4e5414226418fd9364009060fd, type: 3}
+    volume: 0
+  - name: 
+    description: "\uAC74\uBB3C \uD30C\uAD34\uB420 \uB54C"
+    clip: {fileID: 8300000, guid: 40e8ad80e840bb94581cf15973d278ab, type: 3}
+    volume: 0
+  - name: 
+    description: "\uD0C0\uC77C 50\uB3C4 \uB118\uC5C8\uC744 \uB54C"
+    clip: {fileID: 8300000, guid: 3c74a00cdbbb13d4ead8cfa63aaced54, type: 3}
+    volume: 0
+  - name: 
+    description: "\uBCBD\uC5D0 \uAE08\uAC08 \uB54C"
+    clip: {fileID: 8300000, guid: 205bd51abd77a9c41b8de383869e3b58, type: 3}
+    volume: 0
+  - name: 
+    description: "\uD3AD\uADC4 \uBC1C\uC18C\uB9AC"
+    clip: {fileID: 8300000, guid: 60c417d3bc5d6d0478db836481d768ab, type: 3}
+    volume: 0
+  - name: 
+    description: "\uC601\uAD6C \uB0C9\uAC01\uAE30 \uC2DC\uB3D9\uC74C"
+    clip: {fileID: 8300000, guid: ce67930f399a8c2478b9b88d5356f863, type: 3}
+    volume: 0
+  - name: 
+    description: "\uC601\uAD6C \uB0C9\uAC01\uAE30 \uB3D9\uC791\uC74C"
+    clip: {fileID: 8300000, guid: cd5e2dc19d88dd14993d72200c9ada4f, type: 3}
+    volume: 0
+  - name: 
+    description: "\uC601\uAD6C \uB0C9\uAC01\uAE30 \uC815\uC9C0\uC74C"
+    clip: {fileID: 8300000, guid: 2ca2bdf6142f7914281639bf5c77178b, type: 3}
+    volume: 0
+  - name: 
+    description: "\uAC74\uBB3C \uC124\uCE58 \uBD88\uAC00 \uD6A8\uACFC\uC74C"
+    clip: {fileID: 8300000, guid: 85b83b32bef466e42b6a2d50e9e8ade7, type: 3}
+    volume: 0
+  - name: 
+    description: "\uC5F4 \uAD11\uC120 \uACBD\uACE0 \uC18C\uB9AC"
+    clip: {fileID: 8300000, guid: e4a9c6a20aeddc24ea15b27e20cbc825, type: 3}
+    volume: 0
+  - name: 
+    description: "\uC5F4 \uAD11\uC120 \uBC1C\uC0AC \uC18C\uB9AC"
+    clip: {fileID: 8300000, guid: 0871986207389504da9a95df306f9e72, type: 3}
+    volume: 0
