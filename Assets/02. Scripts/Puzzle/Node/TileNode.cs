@@ -50,6 +50,10 @@ public class TileNode : MonoBehaviour
         set
         {
             if (_tileState == value) return;
+            if ((_tileState == ETileState.Destroy || _tileState == ETileState.Danger) && value == ETileState.Safe)
+            {
+                GameManager.Instance.StabilizeScore += 1;
+            }
             _tileState = value;
             UpdateSprite();
         }

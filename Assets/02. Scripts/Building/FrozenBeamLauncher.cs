@@ -197,6 +197,8 @@ public class FrozenBeamLauncher : Building
     
     public override void OnCollisionMana(EManaLevel manaLevel)
     {
+        base.OnCollisionMana(manaLevel);
+        
         var manaCost = ManaCostInfo[manaLevel];
         GameManager.Instance.AddGold(manaCost);
 

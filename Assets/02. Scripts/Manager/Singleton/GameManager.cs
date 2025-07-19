@@ -1,5 +1,6 @@
 using System;
 using Core.Scripts;
+using Core.Scripts.Manager;
 using TMPro;
 using UnityEngine;
 
@@ -11,6 +12,8 @@ public class GameManager : Singleton<GameManager>
     private bool _isPaused = false;
     private float _temperature = 0f;
     public float Temperature => _temperature;
+    private float _maxTemperature = 0;
+    
     [Header("Temperature Coefficient")]
     [SerializeField] float _twoCoefficient = 0.00010556f;
     [SerializeField] float _oneCoefficient = 0.02f;
@@ -20,6 +23,26 @@ public class GameManager : Singleton<GameManager>
     public int CannonCount { get; set; } = 0;
 
     private Coroutine _coCountingEffect;
+
+    public struct IceCollectData
+    {
+        public int LevelOne;
+        public int LevelTwo;
+        public int LevelThree;
+    }
+
+    public int ClearTimeScore = 0;
+    public int IceCollectScore = 0;
+    public IceCollectData IceCollectInfo = new()
+    {
+        LevelOne = 0,
+        LevelTwo = 0,
+        LevelThree = 0
+    };
+    public int BestTemperatureScore = 0;
+    public int StabilizeScore = 0;
+    public int ConstructionScore = 0;
+    public int DestructionScore = 0;
 
     /// <summary>
     /// ���� ���� �� ��� �ð� (��)
@@ -46,6 +69,12 @@ public class GameManager : Singleton<GameManager>
             _elapsedTime += Time.deltaTime;
         }
         _temperature = 50f + (_twoCoefficient * _elapsedTime * _elapsedTime) + (_oneCoefficient * _elapsedTime);
+        _maxTemperature = Mathf.Max(_maxTemperature, _temperature);
+
+        if (_temperature < 0.0f)
+        {
+            EndGame();
+        }
     }
 
     public void PauseGame()
@@ -84,5 +113,19 @@ public class GameManager : Singleton<GameManager>
         _coCountingEffect = StartCoroutine(Utils.NumberCountingEffect(textGold, originGold, targetGold));
         
         Gold += cost;
+    }
+
+    public void EndGame()
+    {
+        ClearTimeScore = Math.Max(0, ((600 - ClearTimeScore) / 420) * 3000);
+        IceCollectScore = IceCollectInfo.LevelOne * 10 + 
+                          IceCollectInfo.LevelTwo * 30 + 
+                          IceCollectInfo.LevelThree * 100;
+        BestTemperatureScore = Math.Max(0, (75 - ((int)_maxTemperature * 20)));
+        StabilizeScore *= 50;
+        ConstructionScore *= 100;
+        DestructionScore *= 300;
+        
+        Managers.UI.ShowPopupUI<UIEndingPopup>();
     }
 }

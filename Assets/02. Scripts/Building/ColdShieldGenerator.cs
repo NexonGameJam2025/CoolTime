@@ -85,6 +85,8 @@ public class ColdShieldGenerator : Building
 
     public override void OnCollisionMana(EManaLevel manaLevel)
     {
+        base.OnCollisionMana(manaLevel);
+        
         var timer = TimerInfo[manaLevel];
         var temperature = TemperatureInfo[manaLevel];
         var manaCost = ManaCostInfo[manaLevel];

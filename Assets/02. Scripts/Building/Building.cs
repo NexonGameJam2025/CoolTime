@@ -94,6 +94,9 @@ public abstract class Building : MonoBehaviour
         {
             particleSystem.Stop();
         }
+
+        GameManager.Instance.ConstructionScore += 1;
+        
         OnFinishBuildEvent?.Invoke();
     }
 
@@ -102,6 +105,7 @@ public abstract class Building : MonoBehaviour
     {
         // TODO: 건물 파괴 로직 작성
         CurrentManaLevel = EManaLevel.None;
+        GameManager.Instance.DestructionScore += 1;
     }
     
     protected virtual void TogglePreviewImage(bool isOn)
@@ -109,5 +113,19 @@ public abstract class Building : MonoBehaviour
         
     }
     
-    public abstract void OnCollisionMana(EManaLevel manaLevel);
+    public virtual void OnCollisionMana(EManaLevel manaLevel)
+    {
+        switch (manaLevel)
+        {
+            case EManaLevel.One:
+                GameManager.Instance.IceCollectInfo.LevelOne += 1;
+                break;
+            case EManaLevel.Two:
+                GameManager.Instance.IceCollectInfo.LevelTwo += 1;
+                break;
+            case EManaLevel.Three:
+                GameManager.Instance.IceCollectInfo.LevelThree += 1;
+                break;
+        }
+    }
 }
