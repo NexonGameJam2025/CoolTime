@@ -14,6 +14,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/01. Scenes/PuzzleScene.unity
     guid: f7312f4580d65664bab028545dabecd8
+  - enabled: 1
+    path: Assets/01. Scenes/PuzzleSceneJJM.unity
+    guid: 846dff987e5fb9d4087e8e6ea6dcddee
   m_configObjects:
     com.unity.addressableassets: {fileID: 11400000, guid: 58878cc2cae35b94f8f949ddc5082bde, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 2bcd2660ca9b64942af0de543d8d7100, type: 3}

@@ -12,7 +12,9 @@ namespace Core.Scripts
         public enum ESceneType
         {
             MainScene,
-            PuzzleScene
+            PuzzleScene,
+            PuzzleSceneJJM,
+            
         }
         
         public enum ESoundType

@@ -12,9 +12,11 @@ public class UIMainPopup : UIPopup
 
     public override void OnAwake()
     {
+        base.OnAwake();
+        
         buttonStart.onClick.AddListener(() =>
         {
-            Managers.LoadingScene.LoadScene(nameof(Define.ESceneType.PuzzleScene));
+            Managers.LoadingScene.LoadScene(nameof(Define.ESceneType.PuzzleSceneJJM));
         });
         buttonHelp.onClick.AddListener(() => 
         {
