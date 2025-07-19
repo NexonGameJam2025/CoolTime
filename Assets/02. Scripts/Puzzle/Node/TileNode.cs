@@ -11,7 +11,7 @@ public enum EManaLevel
 
 public enum ETileState
 {
-    Melt, Safe, Danger, Destroy
+    Safe, Danger, Destroy
 }
 
 public class TileNode : MonoBehaviour
@@ -23,7 +23,6 @@ public class TileNode : MonoBehaviour
     private bool _onMana = false;
     public bool OnMana => _onMana;
     private bool _onBuilding = false;
-    private bool _wasInitiallyMelt = false;
     private bool _onWall = false;
     private int _wallCount = 0;
     public bool OnBuilding => _onBuilding;
@@ -61,7 +60,6 @@ public class TileNode : MonoBehaviour
     [SerializeField] private int _shakeFrequency = 30;
 
     [Header("Image")]
-    [SerializeField] private Sprite _meltSprite;
     [SerializeField] private Sprite _safeSprite;
     [SerializeField] private Sprite _dangerSprite;
     [SerializeField] private Sprite _destroySprite;
@@ -93,10 +91,6 @@ public class TileNode : MonoBehaviour
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        if (_tileState == ETileState.Melt)
-        {
-            _wasInitiallyMelt = true;
-        }
 
         if (_upWall)
         {
@@ -202,9 +196,6 @@ public class TileNode : MonoBehaviour
         if (_spriteRenderer == null) return;
         switch (_tileState)
         {
-            case ETileState.Melt:
-                _spriteRenderer.sprite = _meltSprite;
-                break;
             case ETileState.Safe:
                 _spriteRenderer.sprite = _safeSprite;
                 break;
@@ -227,10 +218,6 @@ public class TileNode : MonoBehaviour
         if (_temperature > 50)
         {
             TileState = ETileState.Danger;
-            if (_wasInitiallyMelt)
-            {
-                _wasInitiallyMelt = false;
-            }
 
             if (_co_destroyTimer == null)
             {
@@ -246,16 +233,9 @@ public class TileNode : MonoBehaviour
                 transform.DOKill();
             }
             TileState = ETileState.Danger;
-
-            if (_wasInitiallyMelt)
-            {
-                _wasInitiallyMelt = false;
-            }
         }
         else
         {
-            if (_wasInitiallyMelt) return;
-
             if (_co_destroyTimer != null)
             {
                 StopCoroutine(_co_destroyTimer);

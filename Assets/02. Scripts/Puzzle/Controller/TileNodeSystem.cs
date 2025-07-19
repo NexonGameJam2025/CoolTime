@@ -91,7 +91,7 @@ public class TileNodeSystem : MonoBehaviour
         {
             TileNode currentNode = line[i];
 
-            bool isBoundary = currentNode.TileState == ETileState.Melt || currentNode.TileState == ETileState.Destroy || currentNode.IsCurrentConstructing;
+            bool isBoundary = currentNode.TileState == ETileState.Destroy || currentNode.IsCurrentConstructing;
 
             if (i > 0 && !isBoundary)
             {
@@ -103,15 +103,13 @@ public class TileNodeSystem : MonoBehaviour
             {
                 if (currentSegment.Count > 0) lineActions.AddRange(CalculateSegmentActions(currentSegment, key));
                 currentSegment = new List<TileNode>();
-                if (currentNode.TileState == ETileState.Melt || currentNode.TileState == ETileState.Destroy || currentNode.IsCurrentConstructing) continue;
+                if (currentNode.TileState == ETileState.Destroy || currentNode.IsCurrentConstructing) continue;
             }
             currentSegment.Add(currentNode);
         }
         if (currentSegment.Count > 0) lineActions.AddRange(CalculateSegmentActions(currentSegment, key));
         return lineActions;
     }
-
-    // TileNodeSystem.cs 에서 CalculateSegmentActions 함수만 교체하세요.
 
     private List<ManaAction> CalculateSegmentActions(List<TileNode> segment, InputKey key)
     {
@@ -120,66 +118,84 @@ public class TileNodeSystem : MonoBehaviour
 
         if (manaNodesInSegment.Count == 0) return segmentActions;
 
-        // 이동 방향에 맞춰 마나들을 정렬 (Right/Down이면 오른쪽/아래쪽 마나부터 처리)
         if (key == InputKey.Right || key == InputKey.Down) manaNodesInSegment.Reverse();
 
-        // 타일 노드를 키로 사용하여, 해당 위치에 최종적으로 어떤 마나가 위치할지 계획을 저장
-        var plannedPositions = new Dictionary<TileNode, Mana>();
-
-        foreach (var startNode in manaNodesInSegment)
+        List<TileNode> survivors = new List<TileNode>();
+        for (int i = 0; i < manaNodesInSegment.Count; i++)
         {
-            Mana currentMana = startNode.CurrentMana;
-            TileNode destination = startNode;
-            bool willMerge = false;
+            TileNode survivorNode = manaNodesInSegment[i];
 
-            int startIndex = segment.IndexOf(startNode);
-            int direction = (key == InputKey.Right || key == InputKey.Down) ? 1 : -1;
-
-            // 경로 탐색 루프
-            for (int i = startIndex + direction; i >= 0 && i < segment.Count; i += direction)
+            if (i + 1 < manaNodesInSegment.Count &&
+                survivorNode.CurrentMana.ManaLevel == manaNodesInSegment[i + 1].CurrentMana.ManaLevel &&
+                survivorNode.CurrentMana.ManaLevel < 3)
             {
-                TileNode pathNode = segment[i];
-
-                // 1. 경로에서 '건설 완료' 건물을 만나면 그곳이 최종 목적지 (최우선)
-                if (pathNode.OnBuilding)
+                TileNode sacrificeNode = manaNodesInSegment[i + 1];
+                segmentActions.Add(new ManaAction
                 {
-                    destination = pathNode;
-                    break;
-                }
-
-                // 2. 경로에서 다른 마나의 예정지를 만나면 그 앞에서 멈춤
-                if (plannedPositions.ContainsKey(pathNode))
-                {
-                    Mana occupyingMana = plannedPositions[pathNode];
-
-                    // 합치기 조건 체크
-                    if (occupyingMana.ManaLevel == currentMana.ManaLevel && occupyingMana.ManaLevel < 3 &&
-                        !segmentActions.Exists(a => a.Sacrifice == occupyingMana))
-                    {
-                        destination = pathNode;
-                        willMerge = true;
-                    }
-
-                    break; // 합칠 수 있든 없든, 더 이상 진행하지 않으므로 루프 탈출
-                }
-
-                destination = pathNode; // 이동 가능한 빈 칸이면 목적지 업데이트
-            }
-
-            // 3. 계산된 최종 목적지를 바탕으로 액션 생성
-            if (willMerge)
-            {
-                var survivorAction = segmentActions.Find(a => a.Survivor == plannedPositions[destination]);
-                if (survivorAction != null)
-                {
-                    survivorAction.Sacrifice = currentMana;
-                    survivorAction.SacrificeStartNode = startNode;
-                }
+                    Survivor = survivorNode.CurrentMana,
+                    StartNode = survivorNode,
+                    Sacrifice = sacrificeNode.CurrentMana,
+                    SacrificeStartNode = sacrificeNode
+                });
+                survivors.Add(survivorNode);
+                i++;
             }
             else
             {
-                segmentActions.Add(new ManaAction { Survivor = currentMana, StartNode = startNode, Destination = destination });
-                plannedPositions[destination] = currentMana;
+                segmentActions.Add(new ManaAction
+                {
+                    Survivor = survivorNode.CurrentMana,
+                    StartNode = survivorNode
+                });
+                survivors.Add(survivorNode);
+            }
+        }
+
+        if (key == InputKey.Right || key == InputKey.Down)
+        {
+            int placementIndex = segment.Count - 1;
+            for (int i = 0; i < survivors.Count; i++)
+            {
+                TileNode survivorStartNode = survivors[i];
+                TileNode destinationNode = segment[placementIndex - i];
+
+                int start = segment.IndexOf(survivorStartNode);
+                int end = segment.IndexOf(destinationNode);
+
+                for (int j = start; j <= end; j++)
+                {
+                    if (segment[j].OnBuilding)
+                    {
+                        destinationNode = segment[j];
+                        break;
+                    }
+                }
+
+                var action = segmentActions.Find(a => a.StartNode == survivorStartNode);
+                if (action != null) action.Destination = destinationNode;
+            }
+        }
+        else
+        {
+            int placementIndex = 0;
+            for (int i = 0; i < survivors.Count; i++)
+            {
+                TileNode survivorStartNode = survivors[i];
+                TileNode destinationNode = segment[placementIndex + i];
+
+                int start = segment.IndexOf(survivorStartNode);
+                int end = segment.IndexOf(destinationNode);
+
+                for (int j = start; j >= end; j--)
+                {
+                    if (segment[j].OnBuilding)
+                    {
+                        destinationNode = segment[j];
+                        break;
+                    }
+                }
+                var action = segmentActions.Find(a => a.StartNode == survivorStartNode);
+                if (action != null) action.Destination = destinationNode;
             }
         }
         return segmentActions;
@@ -191,11 +207,14 @@ public class TileNodeSystem : MonoBehaviour
 
         foreach (var action in actionPlan)
         {
-            action.StartPosition = action.Survivor.transform.position;
-            action.StartNode.ClearMana();
-            if (action.Sacrifice != null)
+            if (action.StartNode != null)
             {
-                action.SacrificeStartPosition = action.Sacrifice.transform.position;
+                action.StartPosition = action.StartNode.transform.position;
+                action.StartNode.ClearMana();
+            }
+            if (action.SacrificeStartNode != null)
+            {
+                action.SacrificeStartPosition = action.SacrificeStartNode.transform.position;
                 action.SacrificeStartNode.ClearMana();
             }
         }
@@ -208,12 +227,11 @@ public class TileNodeSystem : MonoBehaviour
             {
                 if (action.Destination == null) continue;
 
-                action.Survivor.transform.position = Vector3.Lerp(action.StartPosition, action.Destination.transform.position, t);
+                if (action.Survivor != null)
+                    action.Survivor.transform.position = Vector3.Lerp(action.StartPosition, action.Destination.transform.position, t);
 
                 if (action.Sacrifice != null)
-                {
                     action.Sacrifice.transform.position = Vector3.Lerp(action.SacrificeStartPosition, action.Destination.transform.position, t);
-                }
             }
             yield return null;
         }
@@ -232,7 +250,7 @@ public class TileNodeSystem : MonoBehaviour
 
                 action.Destination.CurrentBuilding.OnCollisionMana((EManaLevel)(finalLevel - 1));
 
-                Destroy(action.Survivor.gameObject);
+                if (action.Survivor != null) Destroy(action.Survivor.gameObject);
                 if (action.Sacrifice != null) Destroy(action.Sacrifice.gameObject);
             }
             else
