@@ -66,10 +66,10 @@ public class ColdShieldGenerator : Building
     
     public override void OnFinishBuild()
     {
-        base.OnFinishBuild();
-        
         OnStartBuildSpriteTween.Kill();
         spriteRendererBuilding.sprite = spriteBuilding[0];
+        
+        base.OnFinishBuild();
     }
 
     public override void OnDeActivate()

@@ -14,24 +14,25 @@ public class GameManager : Singleton<GameManager>
     private Coroutine _coCountingEffect;
 
     /// <summary>
-    /// ╟тюс ╫цюш хд ╟Ф╟З ╫ц╟ё (цй)
+    /// О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫ О©╫О©╫ О©╫О©╫О©╫ О©╫ц╟О©╫ (О©╫О©╫)
     /// </summary>
     public float ElapsedTime => _elapsedTime;
 
     /// <summary>
-    /// ╟тюс юо╫ца╓аЖ ╩Себ
+    /// О©╫О©╫О©╫О©╫ О©╫о╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫
     /// </summary>
     public bool IsPaused => _isPaused;
 
-    private void Start()
+    private void Awake()
     {
+        base.Awake();
         textGold = GameObject.Find("Text_Currency").GetComponent<TextMeshProUGUI>();
         textGold.text = Gold.ToString();
     }
 
     private void Update()
     {
-        // ╟тюсюл ╦ьцГюжаЖ ╬йю╩ ╤╖╦╦ ╫ц╟ё ╟Х╩Й
+        // О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫ О©╫О©╫О©╫О©╫ О©╫ц╟О©╫ О©╫О©╫О©╫
         if (!_isPaused)
         {
             _elapsedTime += Time.deltaTime;
