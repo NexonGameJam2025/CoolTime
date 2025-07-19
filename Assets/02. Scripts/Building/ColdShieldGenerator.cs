@@ -62,8 +62,12 @@ public class ColdShieldGenerator : Building
             case EManaLevel.One:
                 foreach (var (x, y) in FiveDirections)
                 {
+                    var dx = (int)Coordinate.x + x;
+                    var dy = (int)Coordinate.y + y;
+                    if (dx < 0 || dx >= MaxIndex || dy < 0 || dy >= MaxIndex)
+                        continue;
                     
-                    TileNodeSystem.TileNodeGrid[x, y].ApplyTemperature(temperature, timer);
+                    TileNodeSystem.TileNodeGrid[dy, dx].ApplyTemperature(temperature, timer);
                 }
                 break;
             
@@ -71,7 +75,12 @@ public class ColdShieldGenerator : Building
             case EManaLevel.Three:
                 foreach (var (x, y) in NineDirections)
                 {
-                    TileNodeSystem.TileNodeGrid[x, y].ApplyTemperature(temperature, timer);
+                    var dx = (int)Coordinate.x + x;
+                    var dy = (int)Coordinate.y + y;
+                    if (dx < 0 || dx >= MaxIndex || dy < 0 || dy >= MaxIndex)
+                        continue;
+                    
+                    TileNodeSystem.TileNodeGrid[dy, dx].ApplyTemperature(temperature, timer);
                 }
                 break;
             default:

@@ -19,7 +19,8 @@ public abstract class Building : MonoBehaviour
     protected BuilderSystem BuilderSystem;
     protected Vector2 Coordinate;
     protected EManaLevel _currentManaLevel = 0;
-    
+
+    protected readonly int MaxIndex = 7;
     protected readonly List<(int, int)> FiveDirections = new()
     {
         (0, 0), (0, 1), (1, 0), (0, -1), (-1, 0)

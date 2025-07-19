@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Core.Scripts.Helper;
 using UnityEngine;
 using DG.Tweening;
 
@@ -16,6 +17,8 @@ public enum ETileState
 public class TileNode : MonoBehaviour
 {
     private float _temperature;
+    private float _temperatureDecreaseByBuilding = 0f;
+
     private bool _isDestroy = false;
     private bool _onMana = false;
     public bool OnMana => _onMana;
@@ -85,7 +88,6 @@ public class TileNode : MonoBehaviour
 
     private Coroutine _co_timer;
     private Coroutine _co_destroyTimer;
-    private int _currentAppliedTemperature = 0;
     private SpriteRenderer _spriteRenderer;
 
     private void Awake()
@@ -187,7 +189,9 @@ public class TileNode : MonoBehaviour
         if (_isDestroy) return;
 
         float t = GameManager.Instance.ElapsedTime;
-        _temperature = 35f + (_twoCoefficient * t * t) + (_oneCoefficient * t);
+        Debug.Log($"[UpdateTemperature] _temperatureDecreaseByBuilding: {_temperatureDecreaseByBuilding}");
+        _temperature = 35f + (_twoCoefficient * t * t) + (_oneCoefficient * t) + _temperatureDecreaseByBuilding;
+        
 
         UpdateStateByTemperature();
     }
@@ -285,23 +289,11 @@ public class TileNode : MonoBehaviour
 
     private void OnDestroy()
     {
-        if (_co_timer != null)
-        {
-            StopCoroutine(_co_timer);
-            _co_timer = null;
-            _currentAppliedTemperature = 0;
-        }
         transform.DOKill();
     }
 
     private void OnDisable()
     {
-        if (_co_timer != null)
-        {
-            StopCoroutine(_co_timer);
-            _co_timer = null;
-            _currentAppliedTemperature = 0;
-        }
         transform.DOKill();
     }
 
@@ -339,47 +331,14 @@ public class TileNode : MonoBehaviour
 
     public void ApplyTemperature(int temperature, int timer = 0, bool isPermanent = false)
     {
+        _temperatureDecreaseByBuilding -= temperature;
+
         if (isPermanent)
-        {
-            _temperature -= temperature;
-            UpdateStateByTemperature();
-        }
-        else
-        {
-            if (_co_timer != null)
-            {
-                StopCoroutine(_co_timer);
-                _temperature += _currentAppliedTemperature;
-            }
-            _co_timer = StartCoroutine(CO_ApplyTemperature(temperature, timer));
-        }
+            return;
+
+        DOVirtual.DelayedCall(timer, () => _temperatureDecreaseByBuilding += temperature );
     }
-
-    private IEnumerator CO_ApplyTemperature(int temperature, int timer, Action doneCallback = null)
-    {
-        if (_co_timer != null)
-        {
-            StopCoroutine(_co_timer);
-            _temperature += _currentAppliedTemperature;
-        }
-
-        _temperature -= temperature;
-        _currentAppliedTemperature = temperature;
-        UpdateStateByTemperature();
-
-        if (timer > 0)
-        {
-            yield return new WaitForSeconds(timer);
-        }
-
-        _temperature += temperature;
-        _currentAppliedTemperature = 0;
-        UpdateStateByTemperature();
-
-        _co_timer = null;
-        doneCallback?.Invoke();
-    }
-
+    
 #if UNITY_EDITOR
     private void OnValidate()
     {

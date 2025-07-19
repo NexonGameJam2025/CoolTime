@@ -99,16 +99,20 @@ public class FrozenBeamLauncher : Building
                         break;
                 
                     case EManaLevel.Two:
-                        var randomIndex = UnityEngine.Random.Range(0, FiveDirections.Count);
+                        var randomIndex = UnityEngine.Random.Range(1, FiveDirections.Count);
                         var (x, y) = FiveDirections[randomIndex];
                         tileNode.ApplyTemperature(temperature, 0, true);
-                        TileNodeSystem.TileNodeGrid[x, y].ApplyTemperature(temperature, 0, true);
+                        var dx = (int)Coordinate.x + x;
+                        var dy = (int)Coordinate.y + y;
+                        TileNodeSystem.TileNodeGrid[dy, dx].ApplyTemperature(temperature, 0, true);
                         break;
                 
                     case EManaLevel.Three:
-                        foreach (var (dx, dy) in FiveDirections)
+                        foreach (var (ix, iy) in FiveDirections)
                         {
-                            TileNodeSystem.TileNodeGrid[dx, dy].ApplyTemperature(temperature, 0, true);
+                            var dx2 = (int)Coordinate.x + ix;
+                            var dy2 = (int)Coordinate.y + iy;
+                            TileNodeSystem.TileNodeGrid[dy2, dx2].ApplyTemperature(temperature, 0, true);
                         }
                         break;
                 }
