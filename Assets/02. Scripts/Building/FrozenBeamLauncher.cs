@@ -128,6 +128,8 @@ public class FrozenBeamLauncher : Building
 
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
+            if (!hit) return;
+            
             if (hit.TryGetComponent<TileNode>(out var tileNode))
             {
                 tileNode.ToggleSortingLayerUp(false);
