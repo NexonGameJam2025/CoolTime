@@ -1,3 +1,4 @@
+using System;
 using Core.Scripts;
 using TMPro;
 using UnityEngine;
@@ -8,7 +9,9 @@ public class GameManager : Singleton<GameManager>
     
     private float _elapsedTime = 0f;
     private bool _isPaused = false;
-    public int Gold { get; private set; } = 5;
+    public int Gold { get; private set; } = 100; // TODO : Temperary 100 gold
+
+    private Coroutine _coCountingEffect;
 
     /// <summary>
     /// 게임 시작 후 경과 시간 (초)
@@ -58,9 +61,18 @@ public class GameManager : Singleton<GameManager>
             return;
         }
         
-        var previousGold = Gold;
-        Gold += cost;
+        var originGold = Gold;
+        var targetGold = Gold + cost;
         
-        Utils.NumberCountingEffect(textGold, previousGold, Gold);
+        if (_coCountingEffect != null)
+        {
+            StopCoroutine(_coCountingEffect);
+            _coCountingEffect = null;
+            originGold = Convert.ToInt32(textGold.text);
+        }
+
+        _coCountingEffect = StartCoroutine(Utils.NumberCountingEffect(textGold, originGold, targetGold));
+        
+        Gold += cost;
     }
 }
