@@ -9,7 +9,7 @@ public class ManaSystem : MonoBehaviour
 
     private void Start()
     {
-        CreateManaOnRandomSafeTiles(3);
+        CreateManaOnRandomSafeTiles(6);
     }
 
     public void CreateManaOnRandomSafeTiles(int count)
@@ -35,8 +35,8 @@ public class ManaSystem : MonoBehaviour
         for (int i = 0; i < spawnCount; i++)
         {
             TileNode randomTile = shuffledTiles[i];
-            Mana currentMana = Instantiate(_manaGO, randomTile.transform.position, Quaternion.identity, this.transform).GetComponent<Mana>();
-            randomTile.SetMana(currentMana);
+            
+            randomTile.SetMana();
         }
     }
 }

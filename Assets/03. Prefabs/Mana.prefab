@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6706349331783000538}
   - component: {fileID: 1426702905051945634}
+  - component: {fileID: 1522959904843304439}
   m_Layer: 0
   m_Name: Mana
   m_TagString: Untagged
@@ -87,3 +88,20 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1522959904843304439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8184101894774061329}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4152f4ff4b8bd15468996abf7896749d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _manaLevel: 1
+  _levelColors:
+  - {r: 0, g: 0.83080864, b: 1, a: 1}
+  - {r: 0, g: 0.33830023, b: 1, a: 1}
+  - {r: 0.12873587, g: 0, b: 0.63522005, a: 1}
