@@ -64,7 +64,7 @@ public class TileNodeSystem : MonoBehaviour
             }
 
             yield return AnimateMoves(finalActionPlan);
-            FinalizeState(finalActionPlan);
+            FinalizeState(finalActionPlan, inputKey);
         }
 
         _isMoving = false;
@@ -248,11 +248,27 @@ public class TileNodeSystem : MonoBehaviour
         }
     }
 
-    private void FinalizeState(List<ManaAction> actionPlan)
+    private void FinalizeState(List<ManaAction> actionPlan, InputKey key)
     {
         foreach (var action in actionPlan)
         {
             if (action.Destination == null) continue;
+
+            if (key == InputKey.Left && action.Destination.Coordinate == new Vector2(0, 3))
+            {
+                int finalLevel = action.Survivor.ManaLevel;
+                if (action.Sacrifice != null)
+                {
+                    finalLevel++;
+                }
+                Debug.Log("¤»¤»");
+                GameManager.Instance.ApplyCooling((EManaLevel)(finalLevel - 1));
+
+                if (action.Survivor != null) Destroy(action.Survivor.gameObject);
+                if (action.Sacrifice != null) Destroy(action.Sacrifice.gameObject);
+
+                continue;
+            }
 
             if (action.Destination.OnBuilding)
             {

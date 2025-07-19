@@ -3,6 +3,7 @@ using System.Collections;
 using Core.Scripts.Helper;
 using UnityEngine;
 using DG.Tweening;
+using Unity.VisualScripting;
 
 public enum EManaLevel
 {
@@ -19,6 +20,7 @@ public enum ETileState
 
 public class TileNode : MonoBehaviour
 {
+    private bool _isFirstUpdate = true;
     private float _temperature;
     public float TemperatureDecreaseByBuilding { get; set; } = 0f;
 
@@ -188,14 +190,24 @@ public class TileNode : MonoBehaviour
         UpdateTemperature();
     }
 
+
     private void UpdateTemperature()
     {
-        if (_isDestroy) return;
-
         float t = GameManager.Instance.ElapsedTime;
         _temperature = 50f + (_twoCoefficient * t * t) + (_oneCoefficient * t) + TemperatureDecreaseByBuilding;
-
-
+        if( _temperature < 0)
+        {
+            _temperature = 0;
+        }
+        if (_temperature > 100)
+        {
+            _temperature = 100;
+        }
+        if(_temperature < 50)
+        {
+            _isDestroy = false;
+        }
+        if (_isDestroy) return;
         UpdateStateByTemperature();
     }
 
@@ -222,7 +234,7 @@ public class TileNode : MonoBehaviour
 
     private void UpdateStateByTemperature()
     {
-        if (_tileState == ETileState.Destroy) return;
+        //if (_tileState == ETileState.Destroy) return;
 
         if (_temperature > 50)
         {
@@ -245,7 +257,7 @@ public class TileNode : MonoBehaviour
                 _co_destroyTimer = null;
                 transform.DOKill();
             }
-
+            TileState = ETileState.Danger;
             if (_tileState != ETileState.Danger && _co_dangerTimer == null)
             {
                 _co_dangerTimer = StartCoroutine(CO_EnterDangerState());
@@ -270,16 +282,16 @@ public class TileNode : MonoBehaviour
     }
     private IEnumerator CO_EnterDangerState()
     {
-        transform.DOShakePosition(
-            duration: _dangerDelay,
-            strength: new Vector3(_shakeStrength, 0, 0),
-            vibrato: _shakeFrequency,
-            randomness: 0,
-            snapping: false,
-            fadeOut: false
-        );
 
-        yield return new WaitForSeconds(_dangerDelay);
+            transform.DOShakePosition(
+                duration: _dangerDelay,
+                strength: new Vector3(_shakeStrength, 0, 0),
+                vibrato: _shakeFrequency,
+                randomness: 0,
+                snapping: false,
+                fadeOut: false
+            );
+            yield return new WaitForSeconds(_dangerDelay);
 
         if (_temperature > 40)
         {
@@ -289,7 +301,9 @@ public class TileNode : MonoBehaviour
     }
     private IEnumerator CO_DestroyTile()
     {
-        transform.DOShakePosition(
+        if (!_isFirstUpdate)
+        {
+            transform.DOShakePosition(
             duration: _destroyDelay,
             strength: new Vector3(_shakeStrength, 0, 0),
             vibrato: _shakeFrequency,
@@ -299,11 +313,12 @@ public class TileNode : MonoBehaviour
         );
 
         yield return new WaitForSeconds(_destroyDelay);
-
+        }
+        _isFirstUpdate = false;
         if (_temperature > 50)
         {
             TileState = ETileState.Destroy;
-            _currentBuilding.OnDeActivate();
+            _currentBuilding?.OnDeActivate();
             _isDestroy = true;
         }
         _co_destroyTimer = null;
