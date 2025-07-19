@@ -158,6 +158,9 @@ public class FrozenBeamLauncher : Building
                             {
                                 var dx = (int)tileNode.Coordinate.x + ix;
                                 var dy = (int)tileNode.Coordinate.y + iy;
+                                if (dx < 0 || dx >= MaxIndex || dy < 0 || dy >= MaxIndex)
+                                    continue;
+                                
                                 TileNodeSystem.TileNodeGrid[dy, dx].ApplyTemperature(temperature, 0);
                             }
                         }
@@ -168,6 +171,9 @@ public class FrozenBeamLauncher : Building
                             {
                                 var dx = (int)tileNode.Coordinate.x + ix;
                                 var dy = (int)tileNode.Coordinate.y + iy;
+                                if (dx < 0 || dx >= MaxIndex || dy < 0 || dy >= MaxIndex)
+                                    continue;
+                                
                                 TileNodeSystem.TileNodeGrid[dy, dx].ApplyTemperature(temperature, 0);
                             }
                         }
@@ -179,6 +185,9 @@ public class FrozenBeamLauncher : Building
                         {
                             var dx2 = (int)tileNode.Coordinate.x + ix;
                             var dy2 = (int)tileNode.Coordinate.y + iy;
+                            if (dx2 < 0 || dx2 >= MaxIndex || dy2 < 0 || dy2 >= MaxIndex)
+                                continue;
+                            
                             TileNodeSystem.TileNodeGrid[dy2, dx2].ApplyTemperature(temperature, 0);
                         }
                         break;
