@@ -20,11 +20,11 @@ public class TileNode : MonoBehaviour
     private bool _onMana = false;
     public bool OnMana => _onMana;
     private bool _onBuilding = false;
-    private float _elapsedTime = 0f;
+    private bool _wasInitiallyMelt = false;
     private bool _onWall = false;
     private int _wallCount = 0;
     public bool OnBuilding => _onBuilding;
-    
+
     private Action<EManaLevel> _onBuildingCollisionAction;
     private Mana _currentMana;
     public Mana CurrentMana => _currentMana;
@@ -64,7 +64,7 @@ public class TileNode : MonoBehaviour
     [SerializeField] private Wall _downWall;
     [SerializeField] private Wall _rightWall;
     [SerializeField] private Wall _leftWall;
-    
+
     [Header("Coefficient")]
     [SerializeField] float _twoCoefficient = 0.0004f;
     [SerializeField] float _oneCoefficient = 0.03f;
@@ -77,8 +77,11 @@ public class TileNode : MonoBehaviour
     private void Awake()
     {
         _spriteRenderer = GetComponent<SpriteRenderer>();
-        UpdateTemperature(true);
-        
+        if (_tileState == ETileState.Melt)
+        {
+            _wasInitiallyMelt = true;
+        }
+
         if (_upWall)
         {
             _upWall.OnEnableWall += OnEnableWallAction;
@@ -100,14 +103,13 @@ public class TileNode : MonoBehaviour
             _leftWall.OnDisableWall += OnDisableWallAction;
         }
     }
+
     public void ReceiveMana(Mana manaComponent)
     {
-        // 만약 이 타일에 이미 다른 마나가 있었다면 안전하게 파괴합니다.
         if (_onMana && _currentMana != null)
         {
             Destroy(_currentMana.gameObject);
         }
-
         _currentMana = manaComponent;
         _onMana = true;
     }
@@ -117,6 +119,7 @@ public class TileNode : MonoBehaviour
         _currentMana = null;
         _onMana = false;
     }
+
     public void SetMana(int level = 1)
     {
         if (_manaPrefab == null)
@@ -124,7 +127,7 @@ public class TileNode : MonoBehaviour
             Debug.LogError("Mana Prefab이 할당되지 않았습니다!");
             return;
         }
-        if(CurrentMana != null)
+        if (CurrentMana != null)
         {
             Destroy(CurrentMana.gameObject);
         }
@@ -146,7 +149,10 @@ public class TileNode : MonoBehaviour
 
     public void UnsetMana()
     {
-        Destroy(_currentMana.gameObject);
+        if (_currentMana != null)
+        {
+            Destroy(_currentMana.gameObject);
+        }
         _currentMana = null;
         _onMana = false;
     }
@@ -156,16 +162,11 @@ public class TileNode : MonoBehaviour
         UpdateTemperature();
     }
 
-    private void UpdateTemperature(bool isInitial = false)
+    private void UpdateTemperature()
     {
         if (_isDestroy) return;
 
-        if (!isInitial)
-        {
-            _elapsedTime += Time.deltaTime;
-        }
-
-        float t = _elapsedTime;
+        float t = GameManager.Instance.ElapsedTime;
         _temperature = 35f + (_twoCoefficient * t * t) + (_oneCoefficient * t);
 
         UpdateStateByTemperature();
@@ -195,7 +196,6 @@ public class TileNode : MonoBehaviour
         }
     }
 
-
     private void UpdateStateByTemperature()
     {
         if (_tileState == ETileState.Destroy) return;
@@ -203,6 +203,11 @@ public class TileNode : MonoBehaviour
         if (_temperature > 50)
         {
             TileState = ETileState.Danger;
+            if (_wasInitiallyMelt)
+            {
+                _wasInitiallyMelt = false;
+            }
+
             if (_co_destroyTimer == null)
             {
                 _co_destroyTimer = StartCoroutine(CO_DestroyTile());
@@ -217,10 +222,15 @@ public class TileNode : MonoBehaviour
                 transform.DOKill();
             }
             TileState = ETileState.Danger;
+
+            if (_wasInitiallyMelt)
+            {
+                _wasInitiallyMelt = false;
+            }
         }
         else
         {
-            if (_tileState == ETileState.Melt) return;
+            if (_wasInitiallyMelt) return;
 
             if (_co_destroyTimer != null)
             {
@@ -252,7 +262,7 @@ public class TileNode : MonoBehaviour
         }
         _co_destroyTimer = null;
     }
-    
+
     private void OnDestroy()
     {
         if (_co_timer != null)
@@ -280,7 +290,7 @@ public class TileNode : MonoBehaviour
         _wallCount++;
         _onWall = true;
     }
-    
+
     private void OnDisableWallAction()
     {
         _wallCount--;
@@ -322,7 +332,7 @@ public class TileNode : MonoBehaviour
             StopCoroutine(_co_timer);
             _temperature += _currentAppliedTemperature;
         }
-        
+
         _temperature -= temperature;
         _currentAppliedTemperature = temperature;
         UpdateStateByTemperature();
