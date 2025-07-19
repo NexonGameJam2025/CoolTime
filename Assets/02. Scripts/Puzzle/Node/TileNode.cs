@@ -27,6 +27,7 @@ public class TileNode : MonoBehaviour
 
     private Action<EManaLevel> _onBuildingCollisionAction;
     private Building _currentBuilding;
+    public bool CurrentBuilding => _currentBuilding?.IsConstructing ?? false;
     private Mana _currentMana;
     public Mana CurrentMana => _currentMana;
 

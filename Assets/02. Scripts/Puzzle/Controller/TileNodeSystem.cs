@@ -89,7 +89,7 @@ public class TileNodeSystem : MonoBehaviour
         for (int i = 0; i < line.Count; i++)
         {
             TileNode currentNode = line[i];
-            bool isBoundary = currentNode.TileState == ETileState.Melt || currentNode.TileState == ETileState.Destroy;
+            bool isBoundary = currentNode.TileState == ETileState.Melt || currentNode.TileState == ETileState.Destroy || currentNode.CurrentBuilding;
             if (i > 0 && !isBoundary)
             {
                 TileNode previousNode = line[i - 1];
@@ -100,7 +100,7 @@ public class TileNodeSystem : MonoBehaviour
             {
                 if (currentSegment.Count > 0) lineActions.AddRange(CalculateSegmentActions(currentSegment, key));
                 currentSegment = new List<TileNode>();
-                if (currentNode.TileState == ETileState.Melt || currentNode.TileState == ETileState.Destroy) continue;
+                if (currentNode.TileState == ETileState.Melt || currentNode.TileState == ETileState.Destroy || currentNode.CurrentBuilding) continue;
             }
             currentSegment.Add(currentNode);
         }
