@@ -7,6 +7,8 @@ public class ManaSystem : MonoBehaviour
     [SerializeField] private GameObject _manaGO;
     [SerializeField] private TileNodeSystem _nodeSystem;
 
+    private float _manaGenerationTimer;
+
     private void Awake()
     {
         SoundManager.Instance.PlayBGMWithIntro("GamePlay_Intro", "GamePlay_Loop", 1f);
@@ -15,6 +17,44 @@ public class ManaSystem : MonoBehaviour
     private void Start()
     {
         CreateManaOnRandomSafeTiles(6);
+        ResetManaGenerationTimer();
+    }
+
+    private void Update()
+    {
+        _manaGenerationTimer -= Time.deltaTime;
+        if (_manaGenerationTimer <= 0)
+        {
+            CreateManaOnRandomSafeTile();
+            ResetManaGenerationTimer();
+        }
+    }
+
+    private void ResetManaGenerationTimer()
+    {
+        float T = GameManager.Instance.Temperature;
+        float interval = Mathf.Min(3.0f, Mathf.Max(0.6f, 1.0f + 0.05f * (T - 50f)));
+        _manaGenerationTimer = interval;
+    }
+
+    private void CreateManaOnRandomSafeTile()
+    {
+        if (_nodeSystem == null || _manaGO == null) return;
+
+        List<TileNode> availableTiles = new List<TileNode>();
+        foreach (TileNode tile in _nodeSystem.TileNodeGrid)
+        {
+            if (tile.TileState == ETileState.Safe && !tile.OnMana)
+            {
+                availableTiles.Add(tile);
+            }
+        }
+
+        if (availableTiles.Count > 0)
+        {
+            TileNode randomTile = availableTiles[Random.Range(0, availableTiles.Count)];
+            randomTile.SetMana();
+        }
     }
 
     public void CreateManaOnRandomSafeTiles(int count)
@@ -28,7 +68,7 @@ public class ManaSystem : MonoBehaviour
         List<TileNode> safeTiles = new List<TileNode>();
         foreach (TileNode tile in _nodeSystem.TileNodeGrid)
         {
-            if (tile.TileState == ETileState.Safe)
+            if (tile.TileState == ETileState.Safe && !tile.OnMana)
             {
                 safeTiles.Add(tile);
             }
@@ -40,7 +80,6 @@ public class ManaSystem : MonoBehaviour
         for (int i = 0; i < spawnCount; i++)
         {
             TileNode randomTile = shuffledTiles[i];
-
             randomTile.SetMana();
         }
     }
