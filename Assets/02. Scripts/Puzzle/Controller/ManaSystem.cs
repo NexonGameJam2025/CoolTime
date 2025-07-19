@@ -44,7 +44,7 @@ public class ManaSystem : MonoBehaviour
         List<TileNode> availableTiles = new List<TileNode>();
         foreach (TileNode tile in _nodeSystem.TileNodeGrid)
         {
-            if (tile.TileState == ETileState.Safe && !tile.OnMana)
+            if (tile.TileState == ETileState.Safe && !tile.OnMana && !tile.HasBuilding)
             {
                 availableTiles.Add(tile);
             }
@@ -68,7 +68,7 @@ public class ManaSystem : MonoBehaviour
         List<TileNode> safeTiles = new List<TileNode>();
         foreach (TileNode tile in _nodeSystem.TileNodeGrid)
         {
-            if (tile.TileState == ETileState.Safe && !tile.OnMana)
+            if (tile.TileState == ETileState.Safe && !tile.OnMana && !tile.HasBuilding)
             {
                 safeTiles.Add(tile);
             }
