@@ -1,18 +1,23 @@
 using System.Collections.Generic;
 using Core.Scripts;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public abstract class Building : MonoBehaviour
 {
-    [SerializeField] protected SpriteRenderer spriteBuilding;
     [SerializeField] private int cost;
-    [SerializeField] private float previewImageOpacity = 0.5f;
     [SerializeField] private Define.EBuildingType buildingType = Define.EBuildingType.None;
+    [SerializeField] private GameObject builderPrefab;
     
+    public bool IsInit { get; private set; } = false;
+    public bool IsConstructing { get; private set; } = false;
     public Define.EBuildingType BuildingType => buildingType;
-    protected TileNodeSystem _tileNodeSystem;
+    protected readonly float PreviewImageOpacity = 0.5f;
+    protected TileNodeSystem TileNodeSystem;
+    protected BuilderSystem BuilderSystem;
+    protected Vector2 Coordinate;
     
-    protected readonly List<(int, int)> FourDirections = new()
+    protected readonly List<(int, int)> FiveDirections = new()
     {
         (0, 0), (0, 1), (1, 0), (0, -1), (-1, 0)
     };
@@ -21,19 +26,55 @@ public abstract class Building : MonoBehaviour
     {
         (0, 0), (0, 1), (1, 0), (0, -1), (-1, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)
     };
+    
+    protected virtual void Start()
+    {
+        TileNodeSystem = FindObjectOfType<TileNodeSystem>();
+        BuilderSystem = FindObjectOfType<BuilderSystem>();
+    }
+    
+    public virtual void SetSortingLayer(string layerName)
+    {
+        // Implement in derived classes
+    }
 
-    protected void Start()
+    public virtual void OnDragging()
     {
-        _tileNodeSystem = FindObjectOfType<TileNodeSystem>();
+        TogglePreviewImage(true);
+    }
+
+    public virtual void OnStartBuild(Vector2 coordinate)
+    {
+        IsConstructing = true;
+        Coordinate = coordinate;
+        
+        int start;
+        if (Coordinate.y < 2)
+            start = 0;
+        else if (Coordinate.y < 5)
+            start = 1;
+        else
+            start = 2;
+        BuilderSystem.OnStartBuilder(start, this.transform, OnFinishBuild);
+    }
+
+    public virtual void OnFinishBuild()
+    {
+        IsInit = true;
+        IsConstructing = false;
+        TogglePreviewImage(false);
+    }
+
+
+    public virtual void OnDeActivate()
+    {
+        
     }
     
-    public void TogglePreviewImage(bool isOn)
+    protected virtual void TogglePreviewImage(bool isOn)
     {
-        var opacity = isOn ? previewImageOpacity : 1f;
-        var color = spriteBuilding.color;
-        color.a = opacity;
-        spriteBuilding.color = color;
+        
     }
     
-    public abstract void OnCollision(EManaLevel manaLevel);
+    public abstract void OnCollisionMana(EManaLevel manaLevel);
 }

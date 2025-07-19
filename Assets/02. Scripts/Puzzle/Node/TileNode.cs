@@ -26,6 +26,7 @@ public class TileNode : MonoBehaviour
     public bool OnBuilding => _onBuilding;
 
     private Action<EManaLevel> _onBuildingCollisionAction;
+    private Building _currentBuilding;
     private Mana _currentMana;
     public Mana CurrentMana => _currentMana;
 
@@ -84,23 +85,23 @@ public class TileNode : MonoBehaviour
 
         if (_upWall)
         {
-            _upWall.OnEnableWall += OnEnableWallAction;
-            _upWall.OnDisableWall += OnDisableWallAction;
+            _upWall.OnActivateWall += OnActivateWallAction;
+            _upWall.OnDeactivateWall += OnDeactivateWallAction;
         }
         if (_downWall)
         {
-            _downWall.OnEnableWall += OnEnableWallAction;
-            _downWall.OnDisableWall += OnDisableWallAction;
+            _downWall.OnActivateWall += OnActivateWallAction;
+            _downWall.OnDeactivateWall += OnDeactivateWallAction;
         }
         if (_rightWall)
         {
-            _rightWall.OnEnableWall += OnEnableWallAction;
-            _rightWall.OnDisableWall += OnDisableWallAction;
+            _rightWall.OnActivateWall += OnActivateWallAction;
+            _rightWall.OnDeactivateWall += OnDeactivateWallAction;
         }
         if (_leftWall)
         {
-            _leftWall.OnEnableWall += OnEnableWallAction;
-            _leftWall.OnDisableWall += OnDisableWallAction;
+            _leftWall.OnActivateWall += OnActivateWallAction;
+            _leftWall.OnDeactivateWall += OnDeactivateWallAction;
         }
     }
 
@@ -124,7 +125,7 @@ public class TileNode : MonoBehaviour
     {
         if (_manaPrefab == null)
         {
-            Debug.LogError("Mana PrefabÀÌ ÇÒ´çµÇÁö ¾Ê¾Ò½À´Ï´Ù!");
+            Debug.LogError("Mana Prefabï¿½ï¿½ ï¿½Ò´ï¿½ï¿½ï¿½ï¿½ ï¿½Ê¾Ò½ï¿½ï¿½Ï´ï¿½!");
             return;
         }
         if (CurrentMana != null)
@@ -143,7 +144,7 @@ public class TileNode : MonoBehaviour
         }
         else
         {
-            Debug.LogError("»ý¼ºµÈ ¸¶³ª ÇÁ¸®ÆÕ¿¡ 'Mana' ½ºÅ©¸³Æ®°¡ ¾ø½À´Ï´Ù!");
+            Debug.LogError("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Õ¿ï¿½ 'Mana' ï¿½ï¿½Å©ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½!");
         }
     }
 
@@ -285,13 +286,13 @@ public class TileNode : MonoBehaviour
         transform.DOKill();
     }
 
-    private void OnEnableWallAction()
+    private void OnActivateWallAction()
     {
         _wallCount++;
         _onWall = true;
     }
 
-    private void OnDisableWallAction()
+    private void OnDeactivateWallAction()
     {
         _wallCount--;
         if (_wallCount <= 0)
@@ -301,9 +302,19 @@ public class TileNode : MonoBehaviour
         }
     }
 
+    public void ToggleSortingLayerUp(bool isUp)
+    {
+        _spriteRenderer.sortingLayerName = isUp ? "Highlight" : "Default";
+        if (_currentBuilding)
+        {
+            _currentBuilding.SetSortingLayer(isUp ? "Highlight" : "Building");
+        }
+    }
+
     public void SetBuilding(Building building)
     {
-        _onBuildingCollisionAction += building.OnCollision;
+        _onBuildingCollisionAction += building.OnCollisionMana;
+        _currentBuilding = building;
         _onBuilding = true;
     }
 

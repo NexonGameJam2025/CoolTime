@@ -10,6 +10,9 @@ public class UIBuilding : UIBase
     private UI_EventHandler _eventHandler;
     private Building _spawnedBuilding;
     private TileNode _currentAttachedNode;
+    private Wall _currentAttachedWall;
+    private Vector3 _originRotation = Vector3.zero;
+    private Vector3 _originScale = Vector3.one;
     
     private bool _isDragging = false;
     private bool _isAttached = false;
@@ -31,7 +34,9 @@ public class UIBuilding : UIBase
         mousePos.z = 0;
         
         _spawnedBuilding = Instantiate(targetBuildingPrefab, mousePos, Quaternion.identity);
-        _spawnedBuilding.TogglePreviewImage(true);
+        _spawnedBuilding.OnDragging();
+        _originRotation = _spawnedBuilding.transform.eulerAngles;
+        _originScale = _spawnedBuilding.transform.localScale;
         _isDragging = true;
     }
     
@@ -47,7 +52,16 @@ public class UIBuilding : UIBase
         {
             if (_spawnedBuilding.BuildingType == Define.EBuildingType.Wall)
             {
-                
+                var target = hit.transform.gameObject.GetComponent<Wall>();
+                if (target != null && !target.IsEnable)
+                {
+                    _spawnedBuilding.transform.position = target.transform.position;
+                    _spawnedBuilding.transform.eulerAngles = target.transform.eulerAngles;
+                    _spawnedBuilding.transform.localScale = target.transform.localScale;
+                    _currentAttachedWall = target;
+                    _isAttached = true;
+                    return;
+                }
             }
             else
             {
@@ -63,7 +77,10 @@ public class UIBuilding : UIBase
         }
         
         _spawnedBuilding.transform.position = new Vector3(mousePos.x, mousePos.y, 0);
+        _spawnedBuilding.transform.eulerAngles = _originRotation;
+        _spawnedBuilding.transform.localScale = _originScale;
         _currentAttachedNode = null;
+        _currentAttachedWall = null;
         _isAttached = false;
     }
     
@@ -71,11 +88,20 @@ public class UIBuilding : UIBase
     {
         if (!_isDragging || _spawnedBuilding == null)
             return;
-        
-        if (_isAttached && _currentAttachedNode)
+
+        if (_isAttached)
         {
-            _currentAttachedNode.SetBuilding(_spawnedBuilding);
-            _spawnedBuilding.TogglePreviewImage(false);
+            if (_spawnedBuilding.BuildingType == Define.EBuildingType.Wall)
+            {
+                _currentAttachedWall.OnFinishBuild();
+                Destroy(_spawnedBuilding.gameObject);
+            }
+            else
+            {
+                var coordinate = _currentAttachedNode.Coordinate;
+                _spawnedBuilding.OnStartBuild(coordinate);
+                _currentAttachedNode.SetBuilding(_spawnedBuilding);
+            }
         }
         else
         {
