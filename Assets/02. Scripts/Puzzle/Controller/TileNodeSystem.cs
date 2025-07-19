@@ -97,7 +97,7 @@ public class TileNodeSystem : MonoBehaviour
             {
                 TileNode previousNode = line[i - 1];
                 if (key == InputKey.Left || key == InputKey.Right) { if (previousNode.IsRightWallEnable || currentNode.IsLeftWallEnable) isBoundary = true; }
-                else if (key == InputKey.Up || key == InputKey.Down) { if (previousNode.IsDownWallEnable || currentNode.IsUpWallEnable) isBoundary = true; }
+                else if (key == InputKey.Up || key == InputKey.Down) { if (previousNode.IsUpWallEnable || currentNode.IsDownWallEnable) isBoundary = true; }
             }
             if (isBoundary)
             {
