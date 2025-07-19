@@ -6,7 +6,7 @@ public class Mana : MonoBehaviour
     [SerializeField] private int _manaLevel = 1;
     public int ManaLevel => _manaLevel;
 
-    [SerializeField] private Color[] _levelColors = new Color[3];
+    [SerializeField] private Sprite[] _manaSprite = new Sprite[3];
 
     private SpriteRenderer _spriteRenderer;
 
@@ -35,11 +35,11 @@ public class Mana : MonoBehaviour
 
     private void UpdateColor()
     {
-        if (_spriteRenderer == null || _levelColors.Length < _manaLevel)
+        if (_spriteRenderer == null || _manaSprite.Length < _manaLevel)
         {
             return;
         }
 
-        _spriteRenderer.color = _levelColors[_manaLevel - 1];
+        _spriteRenderer.sprite = _manaSprite[_manaLevel - 1];
     }
 }
