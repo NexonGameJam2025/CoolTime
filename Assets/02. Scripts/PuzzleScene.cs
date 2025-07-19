@@ -17,6 +17,8 @@ public class PuzzleScene : BaseScene
     public void Start()
     {
         GameManager.Instance.WallCount = 0;
+        GameManager.Instance.ShieldCount = 0;
+        GameManager.Instance.CannonCount = 0;
         
         var spawnedBuilding = Instantiate(startBuilding, startNode.transform.position, Quaternion.identity);
         spawnedBuilding.OnBuilderStart(startNode.Coordinate);

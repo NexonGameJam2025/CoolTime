@@ -80,6 +80,7 @@ public class FrozenBeamLauncher : Building
     {
         base.OnFinishBuild();
         
+        GameManager.Instance.CannonCount++;
         OnStartBuildSpriteTween.Kill();
         spriteRendererBuilding.sprite = spriteBuilding[0];
         boxCollider2D.enabled = true;
