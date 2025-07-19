@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Core.Scripts;
 using DG.Tweening;
@@ -15,6 +16,7 @@ public abstract class Building : MonoBehaviour
     public bool IsConstructing { get; private set; } = false;
     public Define.EBuildingType BuildingType => buildingType;
     public int Cost => cost;
+    public event Action OnFinishBuildEvent;
     
     protected readonly float CONSTRUCT_ANIM_INTERVAL = 0.2f;
     protected readonly float PreviewImageOpacity = 0.5f;
@@ -42,7 +44,7 @@ public abstract class Building : MonoBehaviour
         { EManaLevel.Three, 15 }
     };
     
-    protected virtual void Start()
+    protected virtual void Awake()
     {
         TileNodeSystem = FindObjectOfType<TileNodeSystem>();
         BuilderSystem = FindObjectOfType<BuilderSystem>();
@@ -83,6 +85,7 @@ public abstract class Building : MonoBehaviour
         IsInit = true;
         IsConstructing = false;
         TogglePreviewImage(false);
+        OnFinishBuildEvent?.Invoke();
     }
 
 

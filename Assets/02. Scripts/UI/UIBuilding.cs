@@ -29,6 +29,12 @@ public class UIBuilding : UIBase
         textCost.text = cost.ToString();
     }
 
+    public void IncreaseCost()
+    {
+        cost += 2;
+        textCost.text = cost.ToString();
+    }
+
     private void OnPointerDownAction(PointerEventData eventData)
     {
         if (eventData.button != PointerEventData.InputButton.Left)

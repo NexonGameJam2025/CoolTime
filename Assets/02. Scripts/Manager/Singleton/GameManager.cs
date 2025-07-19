@@ -15,16 +15,17 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] float _twoCoefficient = 0.00010556f;
     [SerializeField] float _oneCoefficient = 0.02f;
     public int Gold { get; private set; } = 100; // TODO : Temperary 100 gold
+    public int WallCount { get; set; } = 0;
 
     private Coroutine _coCountingEffect;
 
     /// <summary>
-    /// °ÔÀÓ ½ÃÀÛ ÈÄ °æ°ú ½Ã°£ (ÃÊ)
+    /// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ (ï¿½ï¿½)
     /// </summary>
     public float ElapsedTime => _elapsedTime;
 
     /// <summary>
-    /// °ÔÀÓ ÀÏ½ÃÁ¤Áö »óÅÂ
+    /// ï¿½ï¿½ï¿½ï¿½ ï¿½Ï½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     /// </summary>
     public bool IsPaused => _isPaused;
 
@@ -37,7 +38,7 @@ public class GameManager : Singleton<GameManager>
 
     private void Update()
     {
-        // °ÔÀÓÀÌ ¸ØÃçÀÖÁö ¾ÊÀ» ¶§¸¸ ½Ã°£ °è»ê
+        // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ï¿½ï¿½
         if (!_isPaused)
         {
             _elapsedTime += Time.deltaTime;
