@@ -53,7 +53,10 @@ public class ColdShieldGenerator : Building
     {
         var timer = TimerInfo[manaLevel];
         var temperature = TemperatureInfo[manaLevel];
+        var manaCost = ManaCostInfo[manaLevel];
+        GameManager.Instance.AddGold(manaCost);
 
+        // TODO: 이펙트 적용
         switch (manaLevel)
         {
             case EManaLevel.One:

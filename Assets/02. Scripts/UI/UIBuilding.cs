@@ -1,11 +1,14 @@
 using Core.Scripts;
 using Core.Scripts.UI;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class UIBuilding : UIBase
 {
     [SerializeField] private Building targetBuildingPrefab;
+    [SerializeField] private TextMeshProUGUI textCost;
+    [SerializeField] private int cost = 0;
     
     private UI_EventHandler _eventHandler;
     private Building _spawnedBuilding;
@@ -23,12 +26,19 @@ public class UIBuilding : UIBase
         _eventHandler.OnPointerDownHandler += OnPointerDownAction;
         _eventHandler.OnPointerUpHandler += OnPointerUpAction;
         _eventHandler.OnDragHandler += OnDragAction;
+        textCost.text = cost.ToString();
     }
 
     private void OnPointerDownAction(PointerEventData eventData)
     {
         if (eventData.button != PointerEventData.InputButton.Left)
             return;
+
+        if (!GameManager.Instance.IsCanBuyBuilding(cost))
+        {
+            Utils.OnWrongSituationShake(transform, true, 2);
+            return;
+        }
         
         var mousePos = Camera.main.ScreenToWorldPoint(eventData.position);
         mousePos.z = 0;
@@ -89,8 +99,10 @@ public class UIBuilding : UIBase
         if (!_isDragging || _spawnedBuilding == null)
             return;
 
-        if (_isAttached)
+        if (_isAttached && GameManager.Instance.IsCanBuyBuilding(cost))
         {
+            GameManager.Instance.AddGold(-cost);
+            
             if (_spawnedBuilding.BuildingType == Define.EBuildingType.Wall)
             {
                 _currentAttachedWall.OnFinishBuild();

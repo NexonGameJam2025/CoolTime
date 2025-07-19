@@ -10,7 +10,6 @@ public class FrozenBeamLauncher : Building
     [SerializeField] private Sprite spriteOnStartBuilding;
     [SerializeField] BoxCollider2D boxCollider2D;
     
-    private EManaLevel _currentManaLevel = 0;
     public bool IsOnMana { get; private set; } = false;
 
     private bool _isClicked = false;
@@ -88,9 +87,10 @@ public class FrozenBeamLauncher : Building
             if (hit.TryGetComponent<TileNode>(out var tileNode))
             {
                 tileNode.ToggleSortingLayerUp(false);
+                var temperature = TemperatureInfo[_currentManaLevel];
                 
                 _isClicked = false;
-                int temperature = TemperatureInfo[_currentManaLevel];
+                IsOnMana = false;
                 
                 switch (_currentManaLevel)
                 {
@@ -120,6 +120,12 @@ public class FrozenBeamLauncher : Building
     
     public override void OnCollisionMana(EManaLevel manaLevel)
     {
+        var manaCost = ManaCostInfo[manaLevel];
+        GameManager.Instance.AddGold(manaCost);
+        
+        if (_currentManaLevel >= manaLevel)
+            return;
+        
         IsOnMana = true;
         _currentManaLevel = manaLevel;
         

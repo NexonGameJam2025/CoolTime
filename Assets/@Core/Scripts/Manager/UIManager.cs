@@ -67,7 +67,7 @@ namespace Core.Scripts.Manager
             if(string.IsNullOrEmpty(name))
                 name = typeof(T).Name;
         
-            var go = Managers.Resource.Instantiate($"UI/Popup/{name}");
+            var go = Managers.Resource.Instantiate($"UI/Popup/{name}", Root.transform);
             var popup = Utils.GetOrAddComponent<T>(go);
 
             if (_popupPool.Count != 0)
@@ -144,7 +144,7 @@ namespace Core.Scripts.Manager
             if (string.IsNullOrEmpty(name))
                 name = typeof(T).Name;
         
-            var go = Managers.Resource.Instantiate($"UI/Loading/{name}");
+            var go = Managers.Resource.Instantiate($"UI/Loading/{name}", Root.transform);
             var loadingUI = Utils.GetOrAddComponent<T>(go);
         
             _loadingUI = loadingUI;

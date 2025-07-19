@@ -496,7 +496,7 @@ GameObject:
   - component: {fileID: 1266205585966412395}
   - component: {fileID: 6456551038782356220}
   m_Layer: 5
-  m_Name: Button_Start (1)
+  m_Name: Button_help
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -791,6 +791,9 @@ MonoBehaviour:
   frame: {fileID: 3461126207693531768}
   imageDim: {fileID: 0}
   buttonClose: {fileID: 0}
+  buttonStart: {fileID: 3281835887870318789}
+  buttonHelp: {fileID: 6456551038782356220}
+  buttonExit: {fileID: 9016498107383175450}
 --- !u!1 &7350893484273432447
 GameObject:
   m_ObjectHideFlags: 0
@@ -925,7 +928,7 @@ GameObject:
   - component: {fileID: 1875955163875712727}
   - component: {fileID: 9016498107383175450}
   m_Layer: 5
-  m_Name: Button_Start (2)
+  m_Name: Button_exit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

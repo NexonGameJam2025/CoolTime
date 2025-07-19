@@ -12,10 +12,13 @@ public abstract class Building : MonoBehaviour
     public bool IsInit { get; private set; } = false;
     public bool IsConstructing { get; private set; } = false;
     public Define.EBuildingType BuildingType => buildingType;
+    public int Cost => cost;
+    
     protected readonly float PreviewImageOpacity = 0.5f;
     protected TileNodeSystem TileNodeSystem;
     protected BuilderSystem BuilderSystem;
     protected Vector2 Coordinate;
+    protected EManaLevel _currentManaLevel = 0;
     
     protected readonly List<(int, int)> FiveDirections = new()
     {
@@ -25,6 +28,13 @@ public abstract class Building : MonoBehaviour
     protected readonly List<(int, int)> NineDirections = new()
     {
         (0, 0), (0, 1), (1, 0), (0, -1), (-1, 0), (1, 1), (1, -1), (-1, 1), (-1, -1)
+    };
+    
+    protected readonly Dictionary<EManaLevel, int> ManaCostInfo = new()
+    {
+        { EManaLevel.One, 1 },
+        { EManaLevel.Two, 4 },
+        { EManaLevel.Three, 15 }
     };
     
     protected virtual void Start()
@@ -50,11 +60,11 @@ public abstract class Building : MonoBehaviour
         
         int start;
         if (Coordinate.y < 2)
-            start = 0;
+            start = 2;
         else if (Coordinate.y < 5)
             start = 1;
         else
-            start = 2;
+            start = 0;
         BuilderSystem.OnStartBuilder(start, this.transform, OnFinishBuild);
     }
 
