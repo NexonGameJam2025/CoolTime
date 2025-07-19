@@ -89,6 +89,7 @@ public abstract class Building : MonoBehaviour
     public virtual void OnDeActivate()
     {
         // TODO: 건물 파괴 로직 작성
+        CurrentManaLevel = EManaLevel.None;
     }
     
     protected virtual void TogglePreviewImage(bool isOn)

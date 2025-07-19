@@ -73,6 +73,13 @@ public class FrozenBeamLauncher : Building
         spriteRendererBuilding.sprite = spriteBuilding[0];
         boxCollider2D.enabled = true;
     }
+    
+    public override void OnDeActivate()
+    {
+        base.OnDeActivate();
+        
+        spriteRendererBuilding.sprite = spriteBuilding[0];
+    }
 
     private void Update()
     {

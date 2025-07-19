@@ -70,7 +70,14 @@ public class ColdShieldGenerator : Building
         OnStartBuildSpriteTween.Kill();
         spriteRendererBuilding.sprite = spriteBuilding[0];
     }
-    
+
+    public override void OnDeActivate()
+    {
+        base.OnDeActivate();
+        
+        spriteRendererBuilding.sprite = spriteBuilding[0];
+    }
+
     public override void OnCollisionMana(EManaLevel manaLevel)
     {
         var timer = TimerInfo[manaLevel];

@@ -298,6 +298,7 @@ public class TileNode : MonoBehaviour
         if (_temperature > 50)
         {
             TileState = ETileState.Destroy;
+            _currentBuilding.OnDeActivate();
             _isDestroy = true;
         }
         _co_destroyTimer = null;
