@@ -94,6 +94,9 @@ public class FrozenBeamLauncher : Building
         
         spriteRendererBuilding.sprite = spriteBuilding[0];
         OnStartBuildSpriteTween.Kill();
+        IsOnMana = false;
+        _isClicked = false;
+        CurrentManaLevel = EManaLevel.None;
     }
 
     private void Update()
