@@ -10,6 +10,20 @@ public class TileNodeSystem : MonoBehaviour
     private const int GridSize = 7;
     private bool _isMoving = false;
 
+    [Header("Animation Settings")]
+    [SerializeField] private float _manaMoveDuration = 0.15f;
+
+    private class ManaAction
+    {
+        public Mana Survivor;
+        public TileNode StartNode;
+        public Mana Sacrifice;
+        public TileNode SacrificeStartNode;
+        public TileNode Destination;
+        public Vector3 StartPosition;
+        public Vector3 SacrificeStartPosition;
+    }
+
     private void Awake()
     {
         for (int y = 0; y < GridSize; y++)
@@ -23,18 +37,37 @@ public class TileNodeSystem : MonoBehaviour
 
     public void Action(InputKey inputKey)
     {
-        if (_isMoving) return; // 이전 이동이 끝나지 않았으면 입력을 무시
+        if (_isMoving) return;
+        StartCoroutine(ActionCoroutine(inputKey));
+    }
 
+    private IEnumerator ActionCoroutine(InputKey inputKey)
+    {
+        _isMoving = true;
+
+        List<ManaAction> finalActionPlan = CalculateActionPlan(inputKey);
+
+        bool hasMoved = finalActionPlan.Exists(action => action.StartNode != action.Destination || action.Sacrifice != null);
+
+        if (hasMoved)
+        {
+            yield return AnimateMoves(finalActionPlan);
+            FinalizeState(finalActionPlan);
+        }
+
+        _isMoving = false;
+    }
+
+    private List<ManaAction> CalculateActionPlan(InputKey inputKey)
+    {
+        var finalPlan = new List<ManaAction>();
         if (inputKey == InputKey.Left || inputKey == InputKey.Right)
         {
             for (int y = 0; y < GridSize; y++)
             {
                 List<TileNode> line = new List<TileNode>();
-                for (int x = 0; x < GridSize; x++)
-                {
-                    line.Add(_tileNodeGrid[y, x]);
-                }
-                StartCoroutine(ProcessLine(line, inputKey));
+                for (int x = 0; x < GridSize; x++) line.Add(_tileNodeGrid[y, x]);
+                finalPlan.AddRange(CalculateLineActions(line, inputKey));
             }
         }
         else if (inputKey == InputKey.Up || inputKey == InputKey.Down)
@@ -42,131 +75,143 @@ public class TileNodeSystem : MonoBehaviour
             for (int x = 0; x < GridSize; x++)
             {
                 List<TileNode> line = new List<TileNode>();
-                for (int y = 0; y < GridSize; y++)
-                {
-                    line.Add(_tileNodeGrid[y, x]);
-                }
-                StartCoroutine(ProcessLine(line, inputKey));
+                for (int y = 0; y < GridSize; y++) line.Add(_tileNodeGrid[y, x]);
+                finalPlan.AddRange(CalculateLineActions(line, inputKey));
             }
         }
+        return finalPlan;
     }
 
-    private IEnumerator ProcessLine(List<TileNode> line, InputKey key)
+    private List<ManaAction> CalculateLineActions(List<TileNode> line, InputKey key)
     {
-        _isMoving = true;
-
-        // 1. 해당 줄에서 마나만 추출
-        List<Mana> manaInLine = new List<Mana>();
-        foreach (var node in line)
+        var lineActions = new List<ManaAction>();
+        var currentSegment = new List<TileNode>();
+        for (int i = 0; i < line.Count; i++)
         {
-            if (node.OnMana)
+            TileNode currentNode = line[i];
+            bool isBoundary = currentNode.TileState == ETileState.Melt || currentNode.TileState == ETileState.Destroy;
+            if (i > 0 && !isBoundary)
             {
-                manaInLine.Add(node.CurrentMana);
-                node.ClearMana();
+                TileNode previousNode = line[i - 1];
+                if (key == InputKey.Left || key == InputKey.Right) { if (previousNode.IsRightWallEnable || currentNode.IsLeftWallEnable) isBoundary = true; }
+                else if (key == InputKey.Up || key == InputKey.Down) { if (previousNode.IsDownWallEnable || currentNode.IsUpWallEnable) isBoundary = true; }
             }
-        }
-
-        if (manaInLine.Count == 0)
-        {
-            _isMoving = false;
-            yield break; // 처리할 마나가 없으면 종료
-        }
-
-        // 2. 마나 합치기
-        if (key == InputKey.Right || key == InputKey.Down) manaInLine.Reverse();
-
-        List<Mana> mergedMana = new List<Mana>();
-        for (int i = 0; i < manaInLine.Count; i++)
-        {
-            if (i + 1 < manaInLine.Count && manaInLine[i].ManaLevel == manaInLine[i + 1].ManaLevel && manaInLine[i].ManaLevel < 3)
+            if (isBoundary)
             {
-                manaInLine[i].SetLevel(manaInLine[i].ManaLevel + 1);
-                mergedMana.Add(manaInLine[i]);
-                Destroy(manaInLine[i + 1].gameObject);
+                if (currentSegment.Count > 0) lineActions.AddRange(CalculateSegmentActions(currentSegment, key));
+                currentSegment = new List<TileNode>();
+                if (currentNode.TileState == ETileState.Melt || currentNode.TileState == ETileState.Destroy) continue;
+            }
+            currentSegment.Add(currentNode);
+        }
+        if (currentSegment.Count > 0) lineActions.AddRange(CalculateSegmentActions(currentSegment, key));
+        return lineActions;
+    }
+
+    private List<ManaAction> CalculateSegmentActions(List<TileNode> segment, InputKey key)
+    {
+        var segmentActions = new List<ManaAction>();
+        List<TileNode> manaNodesInSegment = new List<TileNode>();
+        foreach (var node in segment)
+        {
+            if (node.OnMana) manaNodesInSegment.Add(node);
+        }
+
+        if (manaNodesInSegment.Count == 0) return segmentActions;
+
+        if (key == InputKey.Right || key == InputKey.Down) manaNodesInSegment.Reverse();
+
+        List<Mana> mergedSurvivors = new List<Mana>();
+        for (int i = 0; i < manaNodesInSegment.Count; i++)
+        {
+            TileNode survivorNode = manaNodesInSegment[i];
+            if (i + 1 < manaNodesInSegment.Count && survivorNode.CurrentMana.ManaLevel == manaNodesInSegment[i + 1].CurrentMana.ManaLevel && survivorNode.CurrentMana.ManaLevel < 3)
+            {
+                TileNode sacrificeNode = manaNodesInSegment[i + 1];
+                segmentActions.Add(new ManaAction { Survivor = survivorNode.CurrentMana, StartNode = survivorNode, Sacrifice = sacrificeNode.CurrentMana, SacrificeStartNode = sacrificeNode });
+                mergedSurvivors.Add(survivorNode.CurrentMana);
                 i++;
             }
             else
             {
-                mergedMana.Add(manaInLine[i]);
+                segmentActions.Add(new ManaAction { Survivor = survivorNode.CurrentMana, StartNode = survivorNode });
+                mergedSurvivors.Add(survivorNode.CurrentMana);
             }
         }
 
-        // 3. 마지막 도달 지점 (Protected Index) 찾기
-        int protectedIndex = -1;
         if (key == InputKey.Right || key == InputKey.Down)
         {
-            // 오른쪽/아래로 이동: 끝에서부터 장애물 없는 곳 찾기
-            for (int i = line.Count - 1; i >= 0; i--)
+            int protectedIndex = segment.Count - 1;
+            for (int i = 0; i < mergedSurvivors.Count; i++)
             {
-                if (line[i].TileState != ETileState.Melt && line[i].TileState != ETileState.Destroy)
-                {
-                    protectedIndex = i;
-                    break;
-                }
+                var action = segmentActions.Find(a => a.Survivor == mergedSurvivors[i]);
+                if (action != null) action.Destination = segment[protectedIndex - i];
             }
         }
-        else // 왼쪽/위로 이동
+        else
         {
-            for (int i = 0; i < line.Count; i++)
+            int protectedIndex = 0;
+            for (int i = 0; i < mergedSurvivors.Count; i++)
             {
-                if (line[i].TileState != ETileState.Melt && line[i].TileState != ETileState.Destroy)
-                {
-                    protectedIndex = i;
-                    break;
-                }
+                var action = segmentActions.Find(a => a.Survivor == mergedSurvivors[i]);
+                if (action != null) action.Destination = segment[protectedIndex + i];
             }
         }
-
-        if (protectedIndex == -1) // 이동할 공간이 전혀 없음
-        {
-            // 원래 위치로 마나 복구 (필요 시) 또는 파괴
-            foreach (var mana in mergedMana) Destroy(mana.gameObject);
-            _isMoving = false;
-            yield break;
-        }
-
-        // 4. 합쳐진 마나를 protectedIndex부터 배치 및 이동
-        if (key == InputKey.Right || key == InputKey.Down)
-        {
-            for (int i = 0; i < mergedMana.Count; i++)
-            {
-                int destinationIndex = protectedIndex - i;
-                if (destinationIndex < 0) break; // 공간이 부족하면 멈춤
-                StartCoroutine(TransferMana(mergedMana[i], line[destinationIndex]));
-            }
-        }
-        else // 왼쪽/위로 이동
-        {
-            for (int i = 0; i < mergedMana.Count; i++)
-            {
-                int destinationIndex = protectedIndex + i;
-                if (destinationIndex >= line.Count) break;
-                StartCoroutine(TransferMana(mergedMana[i], line[destinationIndex]));
-            }
-        }
-
-        // 모든 이동 애니메이션이 끝날 때까지 대기 (간단하게 최대 이동시간만큼 대기)
-        yield return new WaitForSeconds(0.2f);
-        _isMoving = false;
+        return segmentActions;
     }
 
-    private IEnumerator TransferMana(Mana mana, TileNode endTileNode)
+    private IEnumerator AnimateMoves(List<ManaAction> actionPlan)
     {
-        if (mana == null) yield break;
-
-        float moveDuration = 0.15f;
-        Vector3 startPosition = mana.transform.position;
-        Vector3 endPosition = endTileNode.transform.position;
         float elapsedTime = 0f;
 
-        while (elapsedTime < moveDuration)
+        foreach (var action in actionPlan)
         {
-            mana.transform.position = Vector3.Lerp(startPosition, endPosition, elapsedTime / moveDuration);
-            elapsedTime += Time.deltaTime;
-            yield return null;
+            action.StartPosition = action.Survivor.transform.position;
+            action.StartNode.ClearMana();
+            if (action.Sacrifice != null)
+            {
+                action.SacrificeStartPosition = action.Sacrifice.transform.position;
+                action.SacrificeStartNode.ClearMana();
+            }
         }
 
-        mana.transform.position = endPosition;
-        endTileNode.ReceiveMana(mana);
+        while (elapsedTime < _manaMoveDuration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = Mathf.Clamp01(elapsedTime / _manaMoveDuration);
+
+            foreach (var action in actionPlan)
+            {
+                if (action.Destination == null) continue;
+
+                Vector3 targetPos = action.Destination.transform.position;
+                action.Survivor.transform.position = Vector3.Lerp(action.StartPosition, targetPos, t);
+
+                if (action.Sacrifice != null)
+                {
+                    action.Sacrifice.transform.position = Vector3.Lerp(action.SacrificeStartPosition, targetPos, t);
+                }
+            }
+            yield return null;
+        }
+    }
+
+    private void FinalizeState(List<ManaAction> actionPlan)
+    {
+        foreach (var action in actionPlan)
+        {
+            if (action.Destination == null) continue;
+
+            if (action.Sacrifice != null)
+            {
+                action.Survivor.SetLevel(action.Survivor.ManaLevel + 1);
+                action.Destination.ReceiveMana(action.Survivor);
+                Destroy(action.Sacrifice.gameObject);
+            }
+            else
+            {
+                action.Destination.ReceiveMana(action.Survivor);
+            }
+        }
     }
 }
