@@ -1,11 +1,14 @@
 using Core.Scripts;
 using Core.Scripts.UI;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
 public class UIBuilding : UIBase
 {
     [SerializeField] private Building targetBuildingPrefab;
+    [SerializeField] private TextMeshProUGUI textCost;
+    [SerializeField] private int cost = 0;
     
     private UI_EventHandler _eventHandler;
     private Building _spawnedBuilding;
@@ -23,6 +26,7 @@ public class UIBuilding : UIBase
         _eventHandler.OnPointerDownHandler += OnPointerDownAction;
         _eventHandler.OnPointerUpHandler += OnPointerUpAction;
         _eventHandler.OnDragHandler += OnDragAction;
+        textCost.text = cost.ToString();
     }
 
     private void OnPointerDownAction(PointerEventData eventData)
