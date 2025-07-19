@@ -16,7 +16,13 @@ public class UITemperatureSlider : UIBase
         slider.value = START_TEMPERATURE / 100.0f;
         textValue.text = $"{START_TEMPERATURE:F1} °C";
     }
-    
+
+    private void Update()
+    {
+        slider.value = GameManager.Instance.Temperature / 100.0f;
+        textValue.text = $"{GameManager.Instance.Temperature:F1} °C";
+    }
+
     public void SetTemperature(float temperature)
     {
         if (temperature < 0.0f || temperature >= MAX_TEMPERATURE)

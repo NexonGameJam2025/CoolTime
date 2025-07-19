@@ -85,8 +85,8 @@ public class TileNode : MonoBehaviour
     public bool IsRightWallEnable => _rightWall?.IsEnable ?? false;
 
     [Header("Coefficient")]
-    [SerializeField] float _twoCoefficient = 0.0004f;
-    [SerializeField] float _oneCoefficient = 0.03f;
+    [SerializeField] float _twoCoefficient = 0.00010556f;
+    [SerializeField] float _oneCoefficient = 0.02f;
 
     private Coroutine _co_timer;
     private Coroutine _co_dangerTimer;
@@ -188,7 +188,7 @@ public class TileNode : MonoBehaviour
         if (_isDestroy) return;
 
         float t = GameManager.Instance.ElapsedTime;
-        _temperature = 35f + (_twoCoefficient * t * t) + (_oneCoefficient * t) + _temperatureDecreaseByBuilding;
+        _temperature = 50f + (_twoCoefficient * t * t) + (_oneCoefficient * t) + _temperatureDecreaseByBuilding;
 
 
         UpdateStateByTemperature();

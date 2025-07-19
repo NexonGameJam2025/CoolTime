@@ -9,6 +9,11 @@ public class GameManager : Singleton<GameManager>
     
     private float _elapsedTime = 0f;
     private bool _isPaused = false;
+    private float _temperature = 0f;
+    public float Temperature => _temperature;
+    [Header("Temperature Coefficient")]
+    [SerializeField] float _twoCoefficient = 0.00010556f;
+    [SerializeField] float _oneCoefficient = 0.02f;
     public int Gold { get; private set; } = 100; // TODO : Temperary 100 gold
 
     private Coroutine _coCountingEffect;
@@ -23,8 +28,9 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public bool IsPaused => _isPaused;
 
-    private void Start()
+    protected void Awake()
     {
+        base.Awake();
         textGold = GameObject.Find("Text_Currency").GetComponent<TextMeshProUGUI>();
         textGold.text = Gold.ToString();
     }
@@ -36,6 +42,7 @@ public class GameManager : Singleton<GameManager>
         {
             _elapsedTime += Time.deltaTime;
         }
+        _temperature = 50f + (_twoCoefficient * _elapsedTime * _elapsedTime) + (_oneCoefficient * _elapsedTime);
     }
 
     public void PauseGame()
