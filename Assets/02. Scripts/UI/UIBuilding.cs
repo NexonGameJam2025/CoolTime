@@ -111,7 +111,7 @@ public class UIBuilding : UIBase
             else
             {
                 var coordinate = _currentAttachedNode.Coordinate;
-                _spawnedBuilding.OnStartBuild(coordinate);
+                _spawnedBuilding.OnBuilderStart(coordinate);
                 _currentAttachedNode.SetBuilding(_spawnedBuilding);
             }
         }

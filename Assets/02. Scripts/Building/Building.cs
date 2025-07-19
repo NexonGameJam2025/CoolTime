@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using Core.Scripts;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -8,17 +9,20 @@ public abstract class Building : MonoBehaviour
     [SerializeField] private int cost;
     [SerializeField] private Define.EBuildingType buildingType = Define.EBuildingType.None;
     [SerializeField] private GameObject builderPrefab;
+    [SerializeField] protected Sprite[] spriteOnStartBuilding;
     
     public bool IsInit { get; private set; } = false;
     public bool IsConstructing { get; private set; } = false;
     public Define.EBuildingType BuildingType => buildingType;
     public int Cost => cost;
     
+    protected readonly float CONSTRUCT_ANIM_INTERVAL = 0.2f;
     protected readonly float PreviewImageOpacity = 0.5f;
     protected TileNodeSystem TileNodeSystem;
     protected BuilderSystem BuilderSystem;
     protected Vector2 Coordinate;
     protected EManaLevel CurrentManaLevel = EManaLevel.None;
+    protected Sequence OnStartBuildSpriteTween;
 
     protected readonly int MaxIndex = 7;
     protected readonly List<(int, int)> FiveDirections = new()
@@ -54,10 +58,11 @@ public abstract class Building : MonoBehaviour
         TogglePreviewImage(true);
     }
 
-    public virtual void OnStartBuild(Vector2 coordinate)
+    public virtual void OnBuilderStart(Vector2 coordinate)
     {
-        IsConstructing = true;
         Coordinate = coordinate;
+        
+        IsConstructing = true;
         
         int start;
         if (Coordinate.y < 2)
@@ -66,7 +71,11 @@ public abstract class Building : MonoBehaviour
             start = 1;
         else
             start = 0;
-        BuilderSystem.OnStartBuilder(start, this.transform, OnFinishBuild);
+        BuilderSystem.OnStartBuilder(start, this.transform, OnStartBuild, OnFinishBuild);
+    }
+
+    public virtual void OnStartBuild()
+    {
     }
 
     public virtual void OnFinishBuild()
@@ -79,7 +88,7 @@ public abstract class Building : MonoBehaviour
 
     public virtual void OnDeActivate()
     {
-        
+        // TODO: 건물 파괴 로직 작성
     }
     
     protected virtual void TogglePreviewImage(bool isOn)

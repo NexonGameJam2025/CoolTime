@@ -37,9 +37,9 @@ public class Wall : Building
         }
     }
 
-    public override void OnStartBuild(Vector2 coordinate)
+    public override void OnBuilderStart(Vector2 coordinate)
     {
-        base.OnStartBuild(coordinate);
+        base.OnBuilderStart(coordinate);
         
         // Do Nothing
     }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -7,7 +8,6 @@ public class FrozenBeamLauncher : Building
 {
     [SerializeField] private SpriteRenderer spriteRendererBuilding;
     [SerializeField] private Sprite[] spriteBuilding;
-    [SerializeField] private Sprite spriteOnStartBuilding;
     [SerializeField] BoxCollider2D boxCollider2D;
     
     public bool IsOnMana { get; private set; } = false;
@@ -37,17 +37,39 @@ public class FrozenBeamLauncher : Building
         spriteRendererBuilding.sprite = spriteBuilding[0];
     }
     
-    public override void OnStartBuild(Vector2 coordinate)
+    public override void OnBuilderStart(Vector2 coordinate)
     {
-        base.OnStartBuild(coordinate);
+        base.OnBuilderStart(coordinate);
         
-        spriteRendererBuilding.sprite = spriteOnStartBuilding;
+        var color = spriteRendererBuilding.color;
+        color.a = 0f;
+        spriteRendererBuilding.color = color;
+    }
+
+    public override void OnStartBuild()
+    {
+        base.OnStartBuild();
+        
+        var color = spriteRendererBuilding.color;
+        color.a = 1.0f;
+        spriteRendererBuilding.color = color;
+        
+        OnStartBuildSpriteTween = DOTween.Sequence()
+            .AppendCallback(() => spriteRendererBuilding.sprite = spriteOnStartBuilding[0])
+            .AppendInterval(CONSTRUCT_ANIM_INTERVAL)
+            .AppendCallback(() => spriteRendererBuilding.sprite = spriteOnStartBuilding[1])
+            .AppendInterval(CONSTRUCT_ANIM_INTERVAL)
+            .SetLoops(-1);
+
+        OnStartBuildSpriteTween.SetLink(gameObject);
+        OnStartBuildSpriteTween.Play();
     }
 
     public override void OnFinishBuild()
     {
         base.OnFinishBuild();
         
+        OnStartBuildSpriteTween.Kill();
         spriteRendererBuilding.sprite = spriteBuilding[0];
         boxCollider2D.enabled = true;
     }

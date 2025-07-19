@@ -11,7 +11,7 @@ public class BuilderSystem : MonoBehaviour
     private float BUILDER_BUILD_EFFECT_DURATION = 1f;
     private float BUILDER_FADE_DURATION = 0.3f;
 
-    public void OnStartBuilder(int start, Transform endPos, Action doneCallback = null)
+    public void OnStartBuilder(int start, Transform endPos, Action onStartBuild = null, Action doneCallback = null)
     {
         var startPos = transBuilderHomes[start];
         
@@ -25,6 +25,7 @@ public class BuilderSystem : MonoBehaviour
             .SetEase(Ease.Linear)
             .OnComplete(() =>
             {
+                onStartBuild?.Invoke();
                 spriteRenderer.DOFade(0f, BUILDER_FADE_DURATION);
             }));
         sequence.AppendInterval(BUILDER_BUILD_EFFECT_DURATION);
