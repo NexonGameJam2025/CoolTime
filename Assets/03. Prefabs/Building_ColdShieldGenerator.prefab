@@ -45,10 +45,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af50a1fbc63e8b34d8f92e312cacf8b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteBuilding: {fileID: 7935868398948573962}
   cost: 8
-  previewImageOpacity: 0.5
   buildingType: 1
+  builderPrefab: {fileID: 7835972357219540927, guid: 149595be88e40654e90f867d50850dc4, type: 3}
+  spriteRendererBuilding: {fileID: 7935868398948573962}
+  spriteBuilding: {fileID: 6860911490723397158, guid: f4440fd42ee0a0e439e6a48fe2c9b055, type: 3}
+  spriteOnStartBuilding: {fileID: -34177259155763263, guid: 78032b7d0a3c6a34e89c867debf38eb3, type: 3}
 --- !u!1 &3779738231311080230
 GameObject:
   m_ObjectHideFlags: 0
@@ -122,11 +124,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 0.754717, g: 0.754717, b: 0.754717, a: 1}
+  m_SortingLayerID: -552058231
+  m_SortingLayer: 1
+  m_SortingOrder: 1
+  m_Sprite: {fileID: 6860911490723397158, guid: f4440fd42ee0a0e439e6a48fe2c9b055, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0

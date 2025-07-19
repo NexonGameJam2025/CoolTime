@@ -3,6 +3,10 @@ using UnityEngine;
 
 public class ColdShieldGenerator : Building
 {
+    [SerializeField] private SpriteRenderer spriteRendererBuilding;
+    [SerializeField] private Sprite spriteBuilding;
+    [SerializeField] private Sprite spriteOnStartBuilding;
+    
     protected readonly Dictionary<EManaLevel, int> TimerInfo = new()
     {
         { EManaLevel.One, 20 },
@@ -16,8 +20,36 @@ public class ColdShieldGenerator : Building
         { EManaLevel.Two, 13 },
         { EManaLevel.Three, 18 }
     };
+
+    public override void SetSortingLayer(string layerName)
+    {
+        base.SetSortingLayer(layerName);
+        
+        spriteRendererBuilding.sortingLayerName = layerName;
+    }
     
-    public override void OnCollision(EManaLevel manaLevel)
+    public override void OnDragging()
+    {
+        base.OnDragging();
+        
+        spriteRendererBuilding.sprite = spriteBuilding;
+    }
+    
+    public override void OnStartBuild(Vector2 coordinate)
+    {
+        base.OnStartBuild(coordinate);
+        
+        spriteRendererBuilding.sprite = spriteOnStartBuilding;
+    }
+    
+    public override void OnFinishBuild()
+    {
+        base.OnFinishBuild();
+        
+        spriteRendererBuilding.sprite = spriteBuilding;
+    }
+    
+    public override void OnCollisionMana(EManaLevel manaLevel)
     {
         var timer = TimerInfo[manaLevel];
         var temperature = TemperatureInfo[manaLevel];
@@ -25,10 +57,10 @@ public class ColdShieldGenerator : Building
         switch (manaLevel)
         {
             case EManaLevel.One:
-                foreach (var (x, y) in FourDirections)
+                foreach (var (x, y) in FiveDirections)
                 {
                     
-                    _tileNodeSystem.TileNodeGrid[x, y].ApplyTemperature(temperature, timer);
+                    TileNodeSystem.TileNodeGrid[x, y].ApplyTemperature(temperature, timer);
                 }
                 break;
             
@@ -36,7 +68,7 @@ public class ColdShieldGenerator : Building
             case EManaLevel.Three:
                 foreach (var (x, y) in NineDirections)
                 {
-                    _tileNodeSystem.TileNodeGrid[x, y].ApplyTemperature(temperature, timer);
+                    TileNodeSystem.TileNodeGrid[x, y].ApplyTemperature(temperature, timer);
                 }
                 break;
             default:
