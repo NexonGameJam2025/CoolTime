@@ -16,6 +16,8 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] float _oneCoefficient = 0.02f;
     public int Gold { get; private set; } = 100; // TODO : Temperary 100 gold
     public int WallCount { get; set; } = 0;
+    public int ShieldCount { get; set; } = 0;
+    public int CannonCount { get; set; } = 0;
 
     private Coroutine _coCountingEffect;
 

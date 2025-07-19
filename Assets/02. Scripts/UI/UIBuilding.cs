@@ -10,6 +10,9 @@ public class UIBuilding : UIBase
     [SerializeField] private TextMeshProUGUI textCost;
     [SerializeField] private int cost = 0;
     
+    private static int MAX_CANNON_COUNT = 4;
+    private static int MAX_SHIELD_COUNT = 3;
+    
     private UI_EventHandler _eventHandler;
     private Building _spawnedBuilding;
     private TileNode _currentAttachedNode;
@@ -44,6 +47,24 @@ public class UIBuilding : UIBase
         {
             Utils.OnWrongSituationShake(transform, true, 2);
             return;
+        }
+
+        switch (targetBuildingPrefab.BuildingType)
+        {
+            case Define.EBuildingType.ColdShieldGenerator:
+                if (GameManager.Instance.ShieldCount >= MAX_CANNON_COUNT)
+                {
+                    Utils.OnWrongSituationShake(transform, true, 2);
+                    return;
+                }
+                break;
+            case Define.EBuildingType.FrozenBeamLauncher:
+                if (GameManager.Instance.CannonCount >= MAX_SHIELD_COUNT)
+                {
+                    Utils.OnWrongSituationShake(transform, true, 2);
+                    return;
+                }
+                break;
         }
         
         var mousePos = Camera.main.ScreenToWorldPoint(eventData.position);

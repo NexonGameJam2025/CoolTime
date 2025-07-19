@@ -22,7 +22,7 @@ public class TileNode : MonoBehaviour
 {
     private bool _isFirstUpdate = true;
     private float _temperature;
-    private float _temperatureDecreaseByBuilding = 0f;
+    public float TemperatureDecreaseByBuilding { get; set; } = 0f;
 
     private bool _isDestroy = false;
     private bool _onMana = false;
@@ -39,6 +39,7 @@ public class TileNode : MonoBehaviour
     public bool HasBuilding => _currentBuilding != null;
     private Mana _currentMana;
     public Mana CurrentMana => _currentMana;
+    public float CurrentTimer = 0;
 
     [Header("Information")]
     [SerializeField] private Vector2 _coordinate;
@@ -361,18 +362,30 @@ public class TileNode : MonoBehaviour
         _onBuilding = true;
     }
 
-    public void ApplyTemperature(int temperature, int timer = 0, Action doneCallback = null)
+    public Tween ApplyTemperature(int temperature, int timer = 0, Action doneCallback = null)
     {
-        _temperatureDecreaseByBuilding -= temperature;
+        TemperatureDecreaseByBuilding -= temperature;
 
         if (timer == 0)
-            return;
+            return null;
+        
+        var currentTime = 0f;
+    
+        return DOVirtual.Float(0f, timer, timer, (value) =>
+            {
+                currentTime = value;
+            })
+            .OnComplete(() =>
+            {
+                TemperatureDecreaseByBuilding += temperature;
+                doneCallback?.Invoke();
+            });
 
-        DOVirtual.DelayedCall(timer, () =>
-        {
-            _temperatureDecreaseByBuilding += temperature;
-            doneCallback?.Invoke();
-        });
+        // return DOVirtual.DelayedCall(timer, () =>
+        // {
+        //     _temperatureDecreaseByBuilding += temperature;
+        //     doneCallback?.Invoke();
+        // });
     }
 
 #if UNITY_EDITOR
