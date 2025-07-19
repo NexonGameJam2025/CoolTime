@@ -334,6 +334,18 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 5335262066581764451}
     - target: {fileID: 4326958260972978111, guid: ea44a03400644c34e859e97878b7d93c, type: 3}
+      propertyPath: buildingType
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4326958260972978111, guid: ea44a03400644c34e859e97878b7d93c, type: 3}
+      propertyPath: rendererWall
+      value: 
+      objectReference: {fileID: 5335262066581764451}
+    - target: {fileID: 4326958260972978111, guid: ea44a03400644c34e859e97878b7d93c, type: 3}
+      propertyPath: builderPrefab
+      value: 
+      objectReference: {fileID: 7835972357219540927, guid: 149595be88e40654e90f867d50850dc4, type: 3}
+    - target: {fileID: 4326958260972978111, guid: ea44a03400644c34e859e97878b7d93c, type: 3}
       propertyPath: spritePillarOne
       value: 
       objectReference: {fileID: 999637750639823292}
@@ -345,6 +357,14 @@ PrefabInstance:
       propertyPath: spriteBrokenWall
       value: 
       objectReference: {fileID: -5913097068623942608, guid: e41db4d7887b92345ac750978f9cc753, type: 3}
+    - target: {fileID: 4326958260972978111, guid: ea44a03400644c34e859e97878b7d93c, type: 3}
+      propertyPath: rendererPillarOne
+      value: 
+      objectReference: {fileID: 999637750639823292}
+    - target: {fileID: 4326958260972978111, guid: ea44a03400644c34e859e97878b7d93c, type: 3}
+      propertyPath: rendererPillarTwo
+      value: 
+      objectReference: {fileID: 795620945764640288}
     m_RemovedComponents:
     - {fileID: 5477639544292921302, guid: ea44a03400644c34e859e97878b7d93c, type: 3}
     m_RemovedGameObjects: []
@@ -358,8 +378,62 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3363041033660756560, guid: ea44a03400644c34e859e97878b7d93c, type: 3}
       insertIndex: -1
       addedObject: {fileID: 6848303471560013789}
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1466782900236599659, guid: ea44a03400644c34e859e97878b7d93c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 3487324418342726813}
   m_SourcePrefab: {fileID: 100100000, guid: ea44a03400644c34e859e97878b7d93c, type: 3}
+--- !u!1 &5483453947935432822 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1466782900236599659, guid: ea44a03400644c34e859e97878b7d93c, type: 3}
+  m_PrefabInstance: {fileID: 6359693001180045597}
+  m_PrefabAsset: {fileID: 0}
+--- !u!61 &3487324418342726813
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5483453947935432822}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 1, y: 1}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  m_Size: {x: 1, y: 1}
+  m_EdgeRadius: 0
 --- !u!4 &8568598665092305741 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3363041033660756560, guid: ea44a03400644c34e859e97878b7d93c, type: 3}

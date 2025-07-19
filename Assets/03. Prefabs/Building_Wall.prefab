@@ -134,13 +134,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5a6c377446d6c04d892552758950b27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteBuilding: {fileID: 2631811001428877858}
   cost: 2
-  previewImageOpacity: 0.5
   buildingType: 3
-  spritePillarOne: {fileID: 4443966929708725813}
-  spritePillarTwo: {fileID: 7574875652097859968}
-  spriteWall: {fileID: 2631811001428877858}
+  builderPrefab: {fileID: 7835972357219540927, guid: 149595be88e40654e90f867d50850dc4, type: 3}
+  rendererPillarOne: {fileID: 4443966929708725813}
+  rendererPillarTwo: {fileID: 7574875652097859968}
+  rendererWall: {fileID: 2631811001428877858}
   spriteBrokenWall: {fileID: -5913097068623942608, guid: e41db4d7887b92345ac750978f9cc753, type: 3}
 --- !u!1 &2586857568865222069
 GameObject:
