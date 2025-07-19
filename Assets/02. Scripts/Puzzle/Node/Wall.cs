@@ -14,7 +14,7 @@ public class Wall : Building
     public event Action OnActivateWall;
     public event Action OnDeactivateWall;
     
-    private static float WALL_LIFE_TIME = 3.0f;
+    private static float WALL_LIFE_TIME = 60.0f;
     private static float WALL_FADE_TIME = 1.0f;
     private static Vector3 WALL_BROKEN_POWER = new(0.0f, 0.035f, 0.0f);
     private Coroutine _coWallLifeTimer;

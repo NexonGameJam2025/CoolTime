@@ -51,13 +51,11 @@ public class ColdShieldGenerator : Building
     
     public override void OnCollisionMana(EManaLevel manaLevel)
     {
-        Debug.Log($"OnCollisionMana: {manaLevel}");
         var timer = TimerInfo[manaLevel];
         var temperature = TemperatureInfo[manaLevel];
         var manaCost = ManaCostInfo[manaLevel];
         GameManager.Instance.AddGold(manaCost);
 
-        Debug.Log($"CurrentManaLevel: {CurrentManaLevel}, InManaLevel: {manaLevel}");
         if ((int)CurrentManaLevel > (int)manaLevel)
         {
             return;
@@ -68,6 +66,7 @@ public class ColdShieldGenerator : Building
             return;
         }
         
+        CurrentManaLevel = manaLevel;
         spriteRendererBuilding.sprite = spriteBuilding[(int)manaLevel + 1];
         
         // TODO: 이펙트 적용

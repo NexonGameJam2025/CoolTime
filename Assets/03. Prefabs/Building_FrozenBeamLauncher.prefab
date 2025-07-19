@@ -50,7 +50,11 @@ MonoBehaviour:
   buildingType: 2
   builderPrefab: {fileID: 7835972357219540927, guid: 149595be88e40654e90f867d50850dc4, type: 3}
   spriteRendererBuilding: {fileID: 4839833818240334826}
-  spriteBuilding: {fileID: -6367863648172635659, guid: 1f0c7c8ab74f61f4f9dd802b3e001a17, type: 3}
+  spriteBuilding:
+  - {fileID: -9091116050888466737, guid: 6d25b3aaa4ede494b9b08f0676b4da40, type: 3}
+  - {fileID: -6367863648172635659, guid: 1f0c7c8ab74f61f4f9dd802b3e001a17, type: 3}
+  - {fileID: -4915992691778494326, guid: 1998bcac36d56604ea075bb1856ea9e8, type: 3}
+  - {fileID: -8328842410364892766, guid: 3a5ff38af96c7eb4dab102e6141d4dcb, type: 3}
   spriteOnStartBuilding: {fileID: -34177259155763263, guid: 78032b7d0a3c6a34e89c867debf38eb3, type: 3}
   boxCollider2D: {fileID: 2299386661987210055}
 --- !u!61 &2299386661987210055

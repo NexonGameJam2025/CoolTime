@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 public class FrozenBeamLauncher : Building
 {
     [SerializeField] private SpriteRenderer spriteRendererBuilding;
-    [SerializeField] private Sprite spriteBuilding;
+    [SerializeField] private Sprite[] spriteBuilding;
     [SerializeField] private Sprite spriteOnStartBuilding;
     [SerializeField] BoxCollider2D boxCollider2D;
     
@@ -18,7 +18,7 @@ public class FrozenBeamLauncher : Building
     
     protected readonly Dictionary<EManaLevel, int> TemperatureInfo = new()
     {
-        { EManaLevel.One, 10 },
+        { EManaLevel.One, 15 },
         { EManaLevel.Two, 20 },
         { EManaLevel.Three, 30 }
     };
@@ -34,7 +34,7 @@ public class FrozenBeamLauncher : Building
     {
         base.OnDragging();
         
-        spriteRendererBuilding.sprite = spriteBuilding;
+        spriteRendererBuilding.sprite = spriteBuilding[0];
     }
     
     public override void OnStartBuild(Vector2 coordinate)
@@ -48,7 +48,7 @@ public class FrozenBeamLauncher : Building
     {
         base.OnFinishBuild();
         
-        spriteRendererBuilding.sprite = spriteBuilding;
+        spriteRendererBuilding.sprite = spriteBuilding[0];
         boxCollider2D.enabled = true;
     }
 
@@ -91,6 +91,8 @@ public class FrozenBeamLauncher : Building
                 
                 _isClicked = false;
                 IsOnMana = false;
+                spriteRendererBuilding.sprite = spriteBuilding[0];
+                CurrentManaLevel = EManaLevel.None;
                 
                 switch (CurrentManaLevel)
                 {
@@ -126,14 +128,20 @@ public class FrozenBeamLauncher : Building
     {
         var manaCost = ManaCostInfo[manaLevel];
         GameManager.Instance.AddGold(manaCost);
-        
-        if (CurrentManaLevel >= manaLevel)
+
+        if ((int)CurrentManaLevel > (int)manaLevel)
+        {
             return;
+        }
+        else if ((int)CurrentManaLevel == (int)manaLevel)
+        {
+            // TODO : 타이머 갱신
+            return;
+        }
         
         IsOnMana = true;
         CurrentManaLevel = manaLevel;
-        
-        // TODO : 마나 레벨에 따른 스프라이트 변경
+        spriteRendererBuilding.sprite = spriteBuilding[(int)manaLevel + 1];
     }
 
     public void OnClickHandler(Action doneCallback = null)
