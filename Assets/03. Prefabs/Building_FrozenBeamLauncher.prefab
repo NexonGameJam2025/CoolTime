@@ -59,6 +59,7 @@ MonoBehaviour:
   - {fileID: -4915992691778494326, guid: 1998bcac36d56604ea075bb1856ea9e8, type: 3}
   - {fileID: -8328842410364892766, guid: 3a5ff38af96c7eb4dab102e6141d4dcb, type: 3}
   boxCollider2D: {fileID: 2299386661987210055}
+  cannonEffectPrefab: {fileID: 2980366436386425422, guid: 03f65c964cc90a242a6910a8d142a710, type: 3}
 --- !u!61 &2299386661987210055
 BoxCollider2D:
   m_ObjectHideFlags: 0

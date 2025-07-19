@@ -3,12 +3,23 @@ using System.Collections.Generic;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Random = UnityEngine.Random;
 
 public class FrozenBeamLauncher : Building
 {
     [SerializeField] private SpriteRenderer spriteRendererBuilding;
     [SerializeField] private Sprite[] spriteBuilding;
     [SerializeField] private BoxCollider2D boxCollider2D;
+    [SerializeField] private GameObject cannonEffectPrefab;
+    
+    private List<(int, int)> VerticalDirections = new()
+    {
+        (0, 1), (0, -1)
+    };
+    private List<(int, int)> HorizontalDirections = new()
+    {
+        (1, 0), (-1, 0)
+    };
     
     public bool IsOnMana { get; private set; } = false;
 
@@ -121,33 +132,57 @@ public class FrozenBeamLauncher : Building
                 _isClicked = false;
                 IsOnMana = false;
                 spriteRendererBuilding.sprite = spriteBuilding[0];
-                CurrentManaLevel = EManaLevel.None;
                 
                 switch (CurrentManaLevel)
                 {
                     case EManaLevel.One:
+                        OnCannonEffect(tileNode.transform.position, ECannonEffectType.Single);
                         tileNode.ApplyTemperature(temperature, 0);
                         break;
                 
                     case EManaLevel.Two:
-                        var randomIndex = UnityEngine.Random.Range(1, FiveDirections.Count);
-                        var (x, y) = FiveDirections[randomIndex];
                         tileNode.ApplyTemperature(temperature, 0);
-                        var dx = (int)Coordinate.x + x;
-                        var dy = (int)Coordinate.y + y;
-                        TileNodeSystem.TileNodeGrid[dy, dx].ApplyTemperature(temperature, 0);
+                        var isVertical = Random.value < 0.5f;
+                        
+                        if (isVertical)
+                        {
+                            OnCannonEffect(tileNode.transform.position, ECannonEffectType.Vertical);
+                            foreach (var (ix, iy) in VerticalDirections)
+                            {
+                                var dx = (int)tileNode.Coordinate.x + ix;
+                                var dy = (int)tileNode.Coordinate.y + iy;
+                                TileNodeSystem.TileNodeGrid[dy, dx].ApplyTemperature(temperature, 0);
+                            }
+                        }
+                        else
+                        {
+                            OnCannonEffect(tileNode.transform.position, ECannonEffectType.Horizontal);
+                            foreach (var (ix, iy) in HorizontalDirections)
+                            {
+                                var dx = (int)tileNode.Coordinate.x + ix;
+                                var dy = (int)tileNode.Coordinate.y + iy;
+                                TileNodeSystem.TileNodeGrid[dy, dx].ApplyTemperature(temperature, 0);
+                            }
+                        }
                         break;
                 
                     case EManaLevel.Three:
+                        OnCannonEffect(tileNode.transform.position, ECannonEffectType.Cross);
                         foreach (var (ix, iy) in FiveDirections)
                         {
-                            var dx2 = (int)Coordinate.x + ix;
-                            var dy2 = (int)Coordinate.y + iy;
+                            var dx2 = (int)tileNode.Coordinate.x + ix;
+                            var dy2 = (int)tileNode.Coordinate.y + iy;
                             TileNodeSystem.TileNodeGrid[dy2, dx2].ApplyTemperature(temperature, 0);
                         }
                         break;
+                    
+                    default:
+                        Debug.Log($"CurrentManaLevel is not valid: {CurrentManaLevel}");
+                        break;
                 }
                 
+                CurrentManaLevel = EManaLevel.None;
+
                 _afterSelectHandler?.Invoke();
             }
         }
@@ -177,5 +212,12 @@ public class FrozenBeamLauncher : Building
     {
         _isClicked = true;
         _afterSelectHandler = doneCallback;
+    }
+
+    private void OnCannonEffect(Vector3 position, ECannonEffectType type)
+    {
+        var cannonEffect = Instantiate(cannonEffectPrefab, position, Quaternion.identity);
+        var cannonEffectScript = cannonEffect.GetComponent<CannonEffect>();
+        cannonEffectScript.OnEffect(type);
     }
 }
