@@ -6,6 +6,7 @@ public class ColdShieldGenerator : Building
 {
     [SerializeField] private SpriteRenderer spriteRendererBuilding;
     [SerializeField] private Sprite[] spriteBuilding;
+    [SerializeField] private Animator animator;
     
     protected readonly Dictionary<EManaLevel, int> TimerInfo = new()
     {
@@ -98,7 +99,8 @@ public class ColdShieldGenerator : Building
         CurrentManaLevel = manaLevel;
         spriteRendererBuilding.sprite = spriteBuilding[(int)manaLevel + 1];
         
-        // TODO: 이펙트 적용
+        animator.gameObject.SetActive(false);
+        animator.gameObject.SetActive(true);
         
         foreach (var (x, y) in NineDirections)
         {
@@ -111,6 +113,7 @@ public class ColdShieldGenerator : Building
             {
                 CurrentManaLevel = EManaLevel.None;
                 spriteRendererBuilding.sprite = spriteBuilding[0];
+                animator.gameObject.SetActive(false);
             });
         }
     }

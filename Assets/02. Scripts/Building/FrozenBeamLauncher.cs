@@ -8,7 +8,7 @@ public class FrozenBeamLauncher : Building
 {
     [SerializeField] private SpriteRenderer spriteRendererBuilding;
     [SerializeField] private Sprite[] spriteBuilding;
-    [SerializeField] BoxCollider2D boxCollider2D;
+    [SerializeField] private BoxCollider2D boxCollider2D;
     
     public bool IsOnMana { get; private set; } = false;
 
