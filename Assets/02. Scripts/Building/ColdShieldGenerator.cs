@@ -72,6 +72,7 @@ public class ColdShieldGenerator : Building
         OnStartBuildSpriteTween.Kill();
         spriteRendererBuilding.sprite = spriteBuilding[0];
         GameManager.Instance.ShieldCount++;
+        GameManager.Instance.MasterBuilder.Shield++;
         
         base.OnFinishBuild();
     }

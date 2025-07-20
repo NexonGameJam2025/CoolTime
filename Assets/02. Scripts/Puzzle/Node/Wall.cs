@@ -52,6 +52,8 @@ public class Wall : Building
         base.OnFinishBuild();
         
         GameManager.Instance.WallCount++;
+        GameManager.Instance.MasterBuilder.Wall++;
+        
         if (GameManager.Instance.WallCount % 5 == 0)
         {
             var barTextObject = GameObject.Find("UI_WallItem");

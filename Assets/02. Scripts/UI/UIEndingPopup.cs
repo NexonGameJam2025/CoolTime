@@ -21,6 +21,15 @@ public class UIEndingPopup : UIPopup
     [SerializeField] private GameObject objMarkB;
     [SerializeField] private GameObject objMarkC;
     [SerializeField] private GameObject objMarkF;
+    [SerializeField] private GameObject objIctCollector;
+    [SerializeField] private GameObject objSuperSpeedIce;
+    [SerializeField] private GameObject objTemperatureControlMaster;
+    [SerializeField] private GameObject objPerfectBuildingDesigner;
+    [SerializeField] private GameObject objMasterBuilder;
+    [SerializeField] private GameObject objSurviveFromHellFire;
+    [SerializeField] private GameObject objPhycho;
+    [SerializeField] private GameObject objDestructionKing;
+
     
     public override void OnAwake()
     {
@@ -48,6 +57,7 @@ public class UIEndingPopup : UIPopup
         StartCoroutine(Utils.NumberCountingEffect(textTotalScore, 0, totalScore));
 
         OnStampEffect(totalScore);
+        ShowSpecialMission();
     }
 
     private void OnStampEffect(int totalScore)
@@ -84,5 +94,20 @@ public class UIEndingPopup : UIPopup
                 objMarkF.SetActive(true);
                 break;
         }
+    }
+
+    private void ShowSpecialMission()
+    {
+        objIctCollector.SetActive(GameManager.Instance.IctCollector >= 10);
+        objSuperSpeedIce.SetActive(GameManager.Instance.ElapsedTime <= 300f);
+        objTemperatureControlMaster.SetActive(GameManager.Instance.MaxTemperature <= 70.0f);
+        objPerfectBuildingDesigner.SetActive(GameManager.Instance.PerfectBuildingDesigner);
+        objMasterBuilder.SetActive(
+            GameManager.Instance.MasterBuilder.Wall >= 10 &&
+            GameManager.Instance.MasterBuilder.Shield >= 1 &&
+            GameManager.Instance.MasterBuilder.Cannon >= 1);
+        objSurviveFromHellFire.SetActive(GameManager.Instance.MaxTemperature >= 70.0f);
+        objPhycho.SetActive(GameManager.Instance.Phycho);
+        objDestructionKing.SetActive(GameManager.Instance.DestructionKing >= 5);
     }
 }

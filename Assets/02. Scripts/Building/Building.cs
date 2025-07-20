@@ -106,6 +106,8 @@ public abstract class Building : MonoBehaviour
         // TODO: 건물 파괴 로직 작성
         CurrentManaLevel = EManaLevel.None;
         GameManager.Instance.DestructionScore += 1;
+        GameManager.Instance.PerfectBuildingDesigner = false;
+        GameManager.Instance.DestructionKing++;
     }
     
     protected virtual void TogglePreviewImage(bool isOn)

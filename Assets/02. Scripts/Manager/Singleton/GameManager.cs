@@ -26,6 +26,7 @@ public class GameManager : Singleton<GameManager>
     private float _temperature = 0f;
     public float Temperature => _temperature;
     private float _maxTemperature = 0;
+    public float MaxTemperature => _maxTemperature;
     private bool _isGameEnd = false;
     
     [Header("Temperature Coefficient")]
@@ -63,6 +64,26 @@ public class GameManager : Singleton<GameManager>
     public int StabilizeScore = 0;
     public int ConstructionScore = 0;
     public int DestructionScore = 0;
+
+
+    public int IctCollector = 0;
+    public bool PerfectBuildingDesigner = true;
+    public struct MasterBuilderData
+    {
+        public int Wall;
+        public int Shield;
+        public int Cannon;
+    }
+    public MasterBuilderData MasterBuilder = new()
+    {
+        Wall = 0,
+        Shield = 0,
+        Cannon = 0
+    };
+
+    public bool Phycho = true;
+    public int DestructionKing = 0;
+    
 
     /// <summary>
     /// ���� ���� �� ��� �ð� (��)

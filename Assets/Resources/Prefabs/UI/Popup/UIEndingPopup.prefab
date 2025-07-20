@@ -2187,7 +2187,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uAD34\uC9DC:\t1\uB2E8\uACC4 \uB0C9\uAE30\uB9CC\uC73C\uB85C \uD074\uB9AC\uC5B4"
+  m_text: "\uAD34\uC9DC: 1\uB2E8\uACC4 \uB0C9\uAE30\uB9CC\uC73C\uB85C \uD074\uB9AC\uC5B4"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: df46be48682dafb41be6ace1d66a0b36, type: 2}
   m_sharedMaterial: {fileID: -4720379701400323529, guid: df46be48682dafb41be6ace1d66a0b36, type: 2}
@@ -2724,7 +2724,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC628\uB3C4 \uAD00\uB9AC \uB9C8\uC2A4\uD130:\t\uCD5C\uACE0 \uC628\uB3C4
+  m_text: "\uC628\uB3C4 \uAD00\uB9AC \uB9C8\uC2A4\uD130: \uCD5C\uACE0 \uC628\uB3C4
     70\u2103 \uC774\uD558 \uC720\uC9C0"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: df46be48682dafb41be6ace1d66a0b36, type: 2}
@@ -3467,6 +3467,14 @@ MonoBehaviour:
   objMarkB: {fileID: 9067214491879556330}
   objMarkC: {fileID: 6464781231735138640}
   objMarkF: {fileID: 5928772311944974290}
+  objIctCollector: {fileID: 4375525516999520559}
+  objSuperSpeedIce: {fileID: 3773360266897749011}
+  objTemperatureControlMaster: {fileID: 6444653985804494668}
+  objPerfectBuildingDesigner: {fileID: 1281298903798623686}
+  objMasterBuilder: {fileID: 929674598617777586}
+  objSurviveFromHellFire: {fileID: 1358882987173829642}
+  objPhycho: {fileID: 4890968682606092282}
+  objDestructionKing: {fileID: 6893104097168020070}
 --- !u!1 &8090256834056472304
 GameObject:
   m_ObjectHideFlags: 0

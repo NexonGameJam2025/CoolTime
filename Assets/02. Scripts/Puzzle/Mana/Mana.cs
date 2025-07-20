@@ -25,6 +25,15 @@ public class Mana : MonoBehaviour
         if (level >= 1 && level <= 3)
         {
             _manaLevel = level;
+            if (_manaLevel == 3)
+            {
+                GameManager.Instance.IctCollector++;
+            }
+
+            if (_manaLevel != 1)
+            {
+                GameManager.Instance.Phycho = false;
+            }
             UpdateColor();
         }
         else
