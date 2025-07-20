@@ -106,7 +106,8 @@ public class FrozenBeamLauncher : Building
         
         var mousePos = Mouse.current.position.ReadValue();
         mousePos = Camera.main.ScreenToWorldPoint(mousePos);
-        var hit = Physics2D.OverlapPoint(mousePos);
+        LayerMask layerMask = LayerMask.GetMask("Node");
+        var hit = Physics2D.OverlapPoint(mousePos, layerMask);
         
         TileNode currentNode = null;
         
@@ -131,7 +132,7 @@ public class FrozenBeamLauncher : Building
 
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            if (!hit) return;
+            if (!hit || !GameManager.Instance.IsCannonReady) return;
             
             if (hit.TryGetComponent<TileNode>(out var tileNode))
             {
