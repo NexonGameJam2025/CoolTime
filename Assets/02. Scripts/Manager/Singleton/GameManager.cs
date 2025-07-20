@@ -84,9 +84,9 @@ public class GameManager : Singleton<GameManager>
         {
             _elapsedTime += Time.deltaTime;
 
-            float totalChangeRate =  - _currentCoolingRate;
+            float totalChangeRate = -_currentCoolingRate;
 
-            _temperature += totalChangeRate * Time.deltaTime;
+            _temperature = 50f + _twoCoefficient * _elapsedTime * _elapsedTime + _oneCoefficient * _elapsedTime + totalChangeRate * Time.deltaTime;
         }
     }
 
