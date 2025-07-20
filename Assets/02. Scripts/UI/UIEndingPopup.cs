@@ -3,6 +3,7 @@ using Core.Scripts.UI;
 using DG.Tweening;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIEndingPopup : UIPopup
 {
@@ -29,6 +30,8 @@ public class UIEndingPopup : UIPopup
     [SerializeField] private GameObject objSurviveFromHellFire;
     [SerializeField] private GameObject objPhycho;
     [SerializeField] private GameObject objDestructionKing;
+    [SerializeField] private GameObject objCut;
+    [SerializeField] private Button buttonCut;
 
     
     public override void OnAwake()
@@ -39,7 +42,10 @@ public class UIEndingPopup : UIPopup
     public override void Init()
     {
         base.Init();
-        buttonClose.gameObject.SetActive(false);
+        buttonCut.onClick.AddListener(() =>
+            {
+                objCut.SetActive(true);
+            });
         
         var totalScore = GameManager.Instance.ClearTimeScore +
                          GameManager.Instance.IceCollectScore +
@@ -68,7 +74,7 @@ public class UIEndingPopup : UIPopup
         sequence.AppendCallback(() => ShowMark(totalScore) );
         sequence.AppendInterval(0.5f);
         sequence.Append(transStamp.DOAnchorPos(transStampTwo.anchoredPosition, 0.3f).SetEase(Ease.InSine))
-            .OnComplete(() => buttonClose.gameObject.SetActive(true));
+            .OnComplete(() => buttonCut.gameObject.SetActive(true));
 
         sequence.SetLink(gameObject);
         sequence.Play();
