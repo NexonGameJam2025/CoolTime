@@ -13,8 +13,6 @@ namespace Core.Scripts
         {
             MainScene,
             PuzzleScene,
-            PuzzleSceneJJM,
-            
         }
         
         public enum ESoundType

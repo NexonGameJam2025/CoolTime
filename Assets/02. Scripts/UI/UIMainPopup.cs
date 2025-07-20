@@ -17,7 +17,7 @@ public class UIMainPopup : UIPopup
         
         buttonStart.onClick.AddListener(() =>
         {
-            Managers.LoadingScene.LoadScene(nameof(Define.ESceneType.PuzzleSceneJJM));
+            Managers.LoadingScene.LoadScene(nameof(Define.ESceneType.PuzzleScene));
             SoundManager.Instance.PlaySFX("Click");
         });
         buttonHelp.onClick.AddListener(() => 

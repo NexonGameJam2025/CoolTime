@@ -39,7 +39,6 @@ public class TileNode : MonoBehaviour
     public bool HasBuilding => _currentBuilding != null;
     private Mana _currentMana;
     public Mana CurrentMana => _currentMana;
-    public float CurrentTimer = 0;
 
     [Header("Information")]
     [SerializeField] private Vector2 _coordinate;
@@ -81,11 +80,6 @@ public class TileNode : MonoBehaviour
     [SerializeField] private Wall _rightWall;
     [SerializeField] private Wall _leftWall;
 
-    private bool _isUpwallEnable = false;
-    private bool _isDownWallEnable = false;
-    private bool _isLeftWallEnable = false;
-    private bool _isRightWallEnable = false;
-
     public bool IsUpWallEnable => _upWall?.IsEnable ?? false;
     public bool IsDownWallEnable => _downWall?.IsEnable ?? false;
     public bool IsLeftWallEnable => _leftWall?.IsEnable ?? false;
@@ -125,13 +119,7 @@ public class TileNode : MonoBehaviour
             _leftWall.OnDeactivateWall += OnDeactivateWallAction;
         }
     }
-    private void FixedUpdate()
-    {
-        _isUpwallEnable = IsUpWallEnable;
-        _isDownWallEnable = IsDownWallEnable;
-        _isLeftWallEnable = IsLeftWallEnable;
-        _isRightWallEnable = IsRightWallEnable;
-    }
+
     public void ReceiveMana(Mana manaComponent)
     {
         if (_onMana && _currentMana != null)

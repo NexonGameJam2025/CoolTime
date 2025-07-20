@@ -11,9 +11,7 @@ using UnityEngine;
 public class CoolingEffectData
 {
     public EManaLevel level;
-    public float duration; // 지속 시간 (초)
-    public float coolingRatePerSecond; // 초당 온도 변화량 (음수 값)
-    public float immediateCooling; // 즉시 냉각 효과
+    public float immediateCooling;
 }
 
 public class GameManager : Singleton<GameManager>
@@ -22,7 +20,6 @@ public class GameManager : Singleton<GameManager>
     private bool _isCooling = false;
     public bool IsCooling => _isCooling;
     public bool IsCannonReady = false;
-    
 
     private float _elapsedTime = 0f;
     private bool _isPaused = false;
@@ -44,8 +41,6 @@ public class GameManager : Singleton<GameManager>
     public int CannonCount { get; set; } = 0;
 
     private Coroutine _coCountingEffect;
-    private Coroutine _coCoolingEffect;
-    private float _currentCoolingRate = 0f;
     
     [SerializeField] float _currentCoolingNumber = 0f;
 
@@ -89,9 +84,6 @@ public class GameManager : Singleton<GameManager>
         {
             _elapsedTime += Time.deltaTime;
 
-            // float totalChangeRate = -_currentCoolingRate;
-
-            // _temperature = 50f + _twoCoefficient * _elapsedTime * _elapsedTime + _oneCoefficient * _elapsedTime + totalChangeRate * Time.deltaTime;
             _temperature = 50f + _twoCoefficient * _elapsedTime * _elapsedTime + _oneCoefficient * _elapsedTime - _currentCoolingNumber;
             _maxTemperature = Mathf.Max(_maxTemperature, _temperature);
 
@@ -103,13 +95,10 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-    /// <summary>
-    /// 마나 레벨에 맞는 냉각 효과를 적용합니다.
-    /// </summary>
     public void ApplyCooling(EManaLevel level)
     {
         _isCooling = true;
-        CoolingEffectData effectData = _coolingEffectDataList.FirstOrDefault(e => e.level == level);
+        var effectData = _coolingEffectDataList.FirstOrDefault(e => e.level == level);
 
         if (effectData == null)
         {
@@ -118,21 +107,6 @@ public class GameManager : Singleton<GameManager>
         }
         
         _currentCoolingNumber += effectData.immediateCooling;
-
-        if (_coCoolingEffect != null)
-        {
-            StopCoroutine(_coCoolingEffect);
-        }
-        // _coCoolingEffect = StartCoroutine(CO_ApplyCooling(effectData.duration, effectData.coolingRatePerSecond));
-    }
-
-    private IEnumerator CO_ApplyCooling(float duration, float coolingRate)
-    {
-        _currentCoolingRate = coolingRate; // 냉각 효과 적용 시작
-        yield return new WaitForSeconds(duration);
-        _currentCoolingRate = 0f; // 냉각 효과 종료
-        _isCooling = false;
-        _coCoolingEffect = null;
     }
 
     public void PauseGame()
@@ -173,7 +147,7 @@ public class GameManager : Singleton<GameManager>
         Gold += cost;
     }
 
-    public void EndGame()
+    private void EndGame()
     {
         ClearTimeScore = Math.Max(0, ((600 - ClearTimeScore) / 420) * 3000);
         IceCollectScore = IceCollectInfo.LevelOne * 10 + 
