@@ -1,4 +1,5 @@
 using System.Runtime.CompilerServices;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.InputSystem;
@@ -43,7 +44,9 @@ public class InputController : MonoBehaviour
         {
             var mousePos = Mouse.current.position.ReadValue();
             mousePos = Camera.main.ScreenToWorldPoint(mousePos);
-            var hit = Physics2D.Raycast(mousePos, Vector2.zero);
+            LayerMask layerMask = LayerMask.GetMask("Building");
+            var hit = Physics2D.Raycast(mousePos, Vector2.zero, Mathf.Infinity, layerMask);
+
 
             if (hit && hit.transform.gameObject.TryGetComponent<FrozenBeamLauncher>(out var building))
             {
@@ -65,11 +68,15 @@ public class InputController : MonoBehaviour
                 }
 
                 _isClickedFrozenBeamLauncher = true;
+                GameManager.Instance.IsCannonReady = true;
                 TogglePanels(true);
-                building.OnClickHandler(() =>
+                DOVirtual.DelayedCall(0.2f, () =>
                 {
-                    TogglePanels(false);
-                    _isClickedFrozenBeamLauncher = false;
+                    building.OnClickHandler(() =>
+                    {
+                        TogglePanels(false);
+                        _isClickedFrozenBeamLauncher = false;
+                    });
                 });
             }
         }

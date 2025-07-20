@@ -13,6 +13,12 @@ public class UIEndingPopup : UIPopup
     [SerializeField] private TextMeshProUGUI textDestructionScore;
     [SerializeField] private TextMeshProUGUI textTotalScore;
     
+    public override void OnAwake()
+    {
+        base.OnAwake();
+
+        Init();
+    }
     public override void Init()
     {
         base.Init();

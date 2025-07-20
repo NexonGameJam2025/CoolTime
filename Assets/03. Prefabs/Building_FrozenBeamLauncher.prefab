@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4484996320781601176}
   - component: {fileID: -6789744914265900456}
   - component: {fileID: 2299386661987210055}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Building_FrozenBeamLauncher
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,7 +124,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8008870436558274392}
   - component: {fileID: 4839833818240334826}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Sprite_Building
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -280,6 +280,10 @@ PrefabInstance:
     - target: {fileID: 6813416509558619124, guid: 3b7f2c753d435d647a80f1f047a113e3, type: 3}
       propertyPath: m_Name
       value: msVFX_Stylized Smoke 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 6813416509558619124, guid: 3b7f2c753d435d647a80f1f047a113e3, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

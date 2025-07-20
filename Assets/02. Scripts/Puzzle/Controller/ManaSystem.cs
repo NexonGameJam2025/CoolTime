@@ -33,7 +33,7 @@ public class ManaSystem : MonoBehaviour
     private void ResetManaGenerationTimer()
     {
         float T = GameManager.Instance.Temperature;
-        float interval = Mathf.Min(3.0f, Mathf.Max(0.6f, 1.0f + 0.05f * (T - 50f)));
+        float interval = Mathf.Min(3.0f, Mathf.Max(1.25f, 1.0f + 0.05f * (T - 50f)));
         _manaGenerationTimer = interval;
     }
 

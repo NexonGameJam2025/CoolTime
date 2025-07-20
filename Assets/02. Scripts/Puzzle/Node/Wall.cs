@@ -55,7 +55,10 @@ public class Wall : Building
         if (GameManager.Instance.WallCount % 5 == 0)
         {
             var barTextObject = GameObject.Find("UI_WallItem");
-            barTextObject.GetComponent<UIBuilding>().IncreaseCost();
+            if (barTextObject)
+            {
+                barTextObject.GetComponent<UIBuilding>().IncreaseCost();
+            }
         }
         
         rendererWall.DOFade(1.0f, 0.5f);

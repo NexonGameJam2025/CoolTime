@@ -13,6 +13,7 @@ public class CoolingEffectData
     public EManaLevel level;
     public float duration; // 지속 시간 (초)
     public float coolingRatePerSecond; // 초당 온도 변화량 (음수 값)
+    public float immediateCooling; // 즉시 냉각 효과
 }
 
 public class GameManager : Singleton<GameManager>
@@ -20,6 +21,7 @@ public class GameManager : Singleton<GameManager>
     [SerializeField] private TextMeshProUGUI textGold;
     private bool _isCooling = false;
     public bool IsCooling => _isCooling;
+    public bool IsCannonReady = false;
     
 
     private float _elapsedTime = 0f;
@@ -27,6 +29,7 @@ public class GameManager : Singleton<GameManager>
     private float _temperature = 0f;
     public float Temperature => _temperature;
     private float _maxTemperature = 0;
+    private bool _isGameEnd = false;
     
     [Header("Temperature Coefficient")]
     [SerializeField] private float _twoCoefficient = 0.00010556f;
@@ -43,6 +46,8 @@ public class GameManager : Singleton<GameManager>
     private Coroutine _coCountingEffect;
     private Coroutine _coCoolingEffect;
     private float _currentCoolingRate = 0f;
+    
+    [SerializeField] float _currentCoolingNumber = 0f;
 
     public struct IceCollectData
     {
@@ -84,9 +89,17 @@ public class GameManager : Singleton<GameManager>
         {
             _elapsedTime += Time.deltaTime;
 
-            float totalChangeRate = -_currentCoolingRate;
+            // float totalChangeRate = -_currentCoolingRate;
 
-            _temperature = 50f + _twoCoefficient * _elapsedTime * _elapsedTime + _oneCoefficient * _elapsedTime + totalChangeRate * Time.deltaTime;
+            // _temperature = 50f + _twoCoefficient * _elapsedTime * _elapsedTime + _oneCoefficient * _elapsedTime + totalChangeRate * Time.deltaTime;
+            _temperature = 50f + _twoCoefficient * _elapsedTime * _elapsedTime + _oneCoefficient * _elapsedTime - _currentCoolingNumber;
+            _maxTemperature = Mathf.Max(_maxTemperature, _temperature);
+
+            if (_temperature < 0.0f && !_isGameEnd)
+            {
+                _isGameEnd = true;
+                EndGame();
+            }
         }
     }
 
@@ -103,12 +116,14 @@ public class GameManager : Singleton<GameManager>
             Debug.LogWarning($"Cooling effect for ManaLevel '{level}' not found.");
             return;
         }
+        
+        _currentCoolingNumber += effectData.immediateCooling;
 
         if (_coCoolingEffect != null)
         {
             StopCoroutine(_coCoolingEffect);
         }
-        _coCoolingEffect = StartCoroutine(CO_ApplyCooling(effectData.duration, effectData.coolingRatePerSecond));
+        // _coCoolingEffect = StartCoroutine(CO_ApplyCooling(effectData.duration, effectData.coolingRatePerSecond));
     }
 
     private IEnumerator CO_ApplyCooling(float duration, float coolingRate)
@@ -118,13 +133,6 @@ public class GameManager : Singleton<GameManager>
         _currentCoolingRate = 0f; // 냉각 효과 종료
         _isCooling = false;
         _coCoolingEffect = null;
-        
-        _maxTemperature = Mathf.Max(_maxTemperature, _temperature);
-
-        if (_temperature < 0.0f)
-        {
-            EndGame();
-        }
     }
 
     public void PauseGame()
@@ -171,7 +179,7 @@ public class GameManager : Singleton<GameManager>
         IceCollectScore = IceCollectInfo.LevelOne * 10 + 
                           IceCollectInfo.LevelTwo * 30 + 
                           IceCollectInfo.LevelThree * 100;
-        BestTemperatureScore = Math.Max(0, (75 - ((int)_maxTemperature * 20)));
+        BestTemperatureScore = Math.Max(0, (75 - (int)_maxTemperature) * 20);
         StabilizeScore *= 50;
         ConstructionScore *= 100;
         DestructionScore *= 300;
